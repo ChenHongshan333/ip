@@ -27,8 +27,13 @@ public class Task {
         isDone = false;
     }
 
-    public String printStatus() {
-        return "[" + taskStatus() + "] " + getDescription();
+   public String getParsedDes() {
+        return CommandParser.lineParser(description).command();
+   }
+
+    @Override
+    public String toString() {
+        return "[" + taskStatus() + "] " + getParsedDes();
     }
 
 }
