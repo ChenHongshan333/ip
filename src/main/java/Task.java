@@ -15,6 +15,10 @@ public class Task {
         return description;
     }
 
+    public boolean getStatus() {
+        return isDone;
+    }
+
     public void setDone() {
         isDone = true;
     }
