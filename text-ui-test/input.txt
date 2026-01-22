@@ -1,0 +1,9 @@
+todo take shower
+ddl submit wk2 iP /by Fri 16:00
+event Porcupine neighbourhood night /from Sun 19:00 /to Sun 20:30
+list
+mark 1
+mark 2
+unmark 1
+list
+bye

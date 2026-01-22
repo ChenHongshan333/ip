@@ -19,64 +19,58 @@ public class Mintty {
         // start
         printGreeting();
 
-        try {
-            // entering events
-            while (true) {
-                // get user input
-                String userInput = readUserInput();
+        // entering events
+        while (true) {
+            // get user input
+            String userInput = readUserInput();
 
-                // Parse the input
-                var parsed = CommandParser.lineParser(userInput);
-                String command = parsed.command();
-                String arg = parsed.arg();
+            // Parse the input
+            var parsed = CommandParser.lineParser(userInput);
+            String command = parsed.command();
+            String arg = parsed.arg();
 
-                // based on different prompt, do different things
-                switch (command) {
-                    case "bye", "exit" :
-                        handleExit();
-                        break;
+            // based on different prompt, do different things
+            switch (command) {
+                case "bye", "exit" :
+                    handleExit();
+                    return;
 
-                    case "list" :
-                        handleList();
-                        break;
+                case "list" :
+                    handleList();
+                    break;
 
-                    case "mark" :
-                        int n = CommandParser.parseTaskNumber(arg);
-                        handleMark(n, true);
-                        break;
+                case "mark" :
+                    int n = CommandParser.parseTaskNumber(arg);
+                    handleMark(n, true);
+                    break;
 
-                    case "unmark" :
-                        int m = CommandParser.parseTaskNumber(arg);
-                        handleMark(m, false);
-                        break;
+                case "unmark" :
+                    int m = CommandParser.parseTaskNumber(arg);
+                    handleMark(m, false);
+                    break;
 
-                    case "todo" :
-                        Task todoTask = new Todo(arg);
-                        handleTask(todoTask);
-                        break;
+                case "todo" :
+                    Task todoTask = new Todo(arg);
+                    handleTask(todoTask);
+                    break;
 
-                    case "deadline", "ddl" :
-                        var dParts = CommandParser.deadlineParser(arg);
-                        Task ddlTask = new Deadline(arg, dParts.by());
-                        handleTask(ddlTask);
-                        break;
+                case "deadline", "ddl" :
+                    var dParts = CommandParser.deadlineParser(arg);
+                    Task ddlTask = new Deadline(arg, dParts.by());
+                    handleTask(ddlTask);
+                    break;
 
-                    case "event" :
-                        var eParts = CommandParser.eventParser(arg);
-                        Task eventTask = new Event(arg, eParts.from(), eParts.to());
-                        handleTask(eventTask);
-                        break;
+                case "event" :
+                    var eParts = CommandParser.eventParser(arg);
+                    Task eventTask = new Event(arg, eParts.from(), eParts.to());
+                    handleTask(eventTask);
+                    break;
 
-                    default:
-                        Task task = new Task(arg);
-                        handleTask(task);
-                        break;
-                }
+                default:
+                    Task task = new Task(arg);
+                    handleTask(task);
+                    break;
             }
-        }
-
-        finally {
-            closeResources();
         }
 
 
@@ -84,6 +78,7 @@ public class Mintty {
 
     public void handleExit() {
         printGoodbye();
+        closeResources();
     }
 
     public void handleList() {
@@ -111,7 +106,7 @@ public class Mintty {
 
     public void printGreeting() {
         System.out.println(separator);
-        System.out.println("Heyyy this is Mintty ๐•ᴗ•๐ \nWhat can I do for you?");
+        System.out.println("Heyyy this is Mintty ~\nWhat can I do for you?");
         System.out.println(separator);
     }
 
@@ -125,7 +120,7 @@ public class Mintty {
 
     public void printGoodbye() {
         System.out.println(separator);
-        System.out.println("Nice to talk to you ˗ˋˏ ♡ ˎˊ˗\nSee you!");
+        System.out.println("Nice to talk to you ^^\nSee you!");
         System.out.println(separator);
     }
 
