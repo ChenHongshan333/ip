@@ -12,20 +12,33 @@ public class Mintty {
     public void run() {
         // start
         printGreeting();
-        // wait the user input
-//        String userInput = readUserInput();
-        // exit
-        printGoodbye();
-        closeResources();
+        
+        // entering events
+        while (true) {
+            String userInput = readUserInput();
+            if (userInput.equals("bye")) {
+                printGoodbye();
+                closeResources();
+                break;
+            }
+            echo(userInput);
+        }
     }
 
     public void printGreeting() {
+        System.out.println(separator);
         System.out.println("Heyyy this is Mintty ๐•ᴗ•๐ \nWhat can I do for you?");
+        System.out.println(separator);
     }
 
     public String readUserInput() {
-        String input = sc.nextLine();
-        return null;
+        return  sc.nextLine();
+    }
+
+    public void echo(String userInput) {
+        System.out.println(separator);
+        System.out.println(userInput);
+        System.out.println(separator);
     }
 
     public void printGoodbye() {
