@@ -67,6 +67,11 @@ public class Mintty {
                         handleTask(eventTask);
                         break;
 
+                    case "delete" :
+                        int r = CommandParser.parseTaskNumber(arg);
+                        handleDelete(r);
+                        break;
+
                     default:
                         throw new IllegalArgumentException("Oops!! I don't know what you're saying TT. Is there a typo?");
                 }
@@ -93,11 +98,15 @@ public class Mintty {
 
     public void handleMark(int n, boolean b) {
         if (n <= 0 || n > list.size()) {
-            throw new IllegalArgumentException("Oops... It is illegal to enter: " + n + ", Plz enter a valid task number!");
+            throw new IllegalArgumentException("Oops... It is illegal to enter: " + n + "... plz enter a valid task number again!");
         }
         Task t = updateTaskStatus(n, b);
         if (t == null) {
-            throw new IllegalArgumentException("Oops... you can't mark or unmark nothing!");
+            if (b) {
+                throw new IllegalArgumentException("Oops... you can't mark nothing!");
+            } else {
+                throw new IllegalArgumentException("Oops... you can't unmark nothing!");
+            }
         } else {
             printMarkedTask(t);
         }
@@ -115,6 +124,14 @@ public class Mintty {
 
         // add user input to the list
         addUserInput(task);
+    }
+
+    public void handleDelete(int number) {
+        if (number <= 0 || number > list.size()) {
+            throw new IllegalArgumentException("Oops... It is illegal to enter: " + number + "... plz enter a valid task number again!");
+        }
+        printDelete(number);
+        list.remove(number - 1);
     }
 
 
@@ -153,6 +170,12 @@ public class Mintty {
     public void printList() {
         int index = 1;
         System.out.println(separator);
+        if (list.isEmpty()) {
+            System.out.println("There is no task in your list QAQ");
+            System.out.println(separator);
+            return;
+        }
+
         System.out.println("Here are the tasks in your list: ");
         for (Task t : list) {
             System.out.println(index + "." + t.toString());
@@ -185,9 +208,12 @@ public class Mintty {
         System.out.println(separator);
     }
 
-    public void printInvalid() {
+    public void printDelete(int number) {
         System.out.println(separator);
-        System.out.println("Your input is invalid!!!");
+        System.out.println("Okie!! I've removed this to from the task list:\n"
+                + list.get(number - 1).toString()
+                + "\nNow you have " + (list.size() - 1) + " tasks in total.");
         System.out.println(separator);
     }
+
 }
