@@ -10,14 +10,15 @@ public class CommandParser {
         // only command
         int firstSpace = line.indexOf(' ');
         if (firstSpace == -1) {
-            return new ParsedCommand(line, "");
+            return new ParsedCommand(Mintty.Command.from(line), "");
         }
 
 
         String command = line.substring(0, firstSpace).toLowerCase();
+        Mintty.Command cmd = Mintty.Command.from(command);
         String arg = line.substring(firstSpace + 1).trim();
 
-        return new ParsedCommand(command, arg);
+        return new ParsedCommand(cmd, arg);
     }
 
 
@@ -92,15 +93,15 @@ public class CommandParser {
 
 
     public static final class ParsedCommand {
-        private final String command;
+        private final Mintty.Command command;
         private final String arg;
 
-        public ParsedCommand(String command, String arg) {
+        public ParsedCommand(Mintty.Command command, String arg) {
             this.command = command;
             this.arg = arg;
         }
 
-        public String command() { return command; }
+        public Mintty.Command command() { return command; }
         public String arg() { return arg; }
     }
 

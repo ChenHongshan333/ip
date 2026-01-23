@@ -1,12 +1,39 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Mintty {
 
     public static void main(String[] args) {
         Mintty mintty = new Mintty();
         mintty.run();
+    }
+
+    public enum Command {
+        BYE("bye", "exit", "quit"),
+        LIST("list"),
+        TODO("todo", "td"),
+        DEADLINE("deadline", "ddl"),
+        EVENT("event", "e"),
+        MARK("mark", "m"),
+        UNMARK("unmark", "u"),
+        DELETE("delete","del"),
+        UNKNOWN();
+
+        private final Set<String> aliases;
+
+        Command(String... aliases) {
+            this.aliases = new HashSet<>();
+            this.aliases.addAll(Arrays.asList(aliases));
+        }
+
+        public static Command from(String token) {
+            if (token == null || token.trim().isEmpty()) return UNKNOWN;
+            String t = token.trim().toLowerCase();
+
+            for (Command c : values()) {
+                if (c.aliases.contains(t)) return c;
+            }
+            return UNKNOWN;
+        }
     }
 
     Scanner sc = new Scanner(System.in);
@@ -27,47 +54,47 @@ public class Mintty {
 
                 // Parse the input (command + arg)
                 var parsed = CommandParser.lineParser(userInput);
-                String command = parsed.command();
+                Command command = parsed.command();
                 String arg = parsed.arg();
 
                 // based on different prompt, do different things
                 switch (command) {
-                    case "bye", "exit" :
+                    case BYE :
                         handleExit();
                         return;
 
-                    case "list" :
+                    case LIST :
                         handleList();
                         break;
 
-                    case "mark" :
+                    case MARK :
                         int n = CommandParser.parseTaskNumber(arg);
                         handleMark(n, true);
                         break;
 
-                    case "unmark" :
+                    case UNMARK :
                         int m = CommandParser.parseTaskNumber(arg);
                         handleMark(m, false);
                         break;
 
-                    case "todo" :
+                    case TODO :
                         Task todoTask = new Todo(arg);
                         handleTask(todoTask);
                         break;
 
-                    case "deadline", "ddl" :
+                    case DEADLINE :
                         var dParts = CommandParser.deadlineParser(arg);
                         Task ddlTask = new Deadline(arg, dParts.by());
                         handleTask(ddlTask);
                         break;
 
-                    case "event" :
+                    case EVENT :
                         var eParts = CommandParser.eventParser(arg);
                         Task eventTask = new Event(arg, eParts.from(), eParts.to());
                         handleTask(eventTask);
                         break;
 
-                    case "delete" :
+                    case DELETE :
                         int r = CommandParser.parseTaskNumber(arg);
                         handleDelete(r);
                         break;

@@ -28,9 +28,6 @@ public class Task {
         isDone = false;
     }
 
-   public String getParsedDes() {
-        return CommandParser.lineParser(description).command();
-   }
 
     @Override
     public String toString() {
