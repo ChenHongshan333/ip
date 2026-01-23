@@ -3,10 +3,9 @@ public class CommandParser {
     // essentially, a parser based on where the first space is
     public static ParsedCommand lineParser(String line) {
         // no command and arg
-        if (line == null) return new ParsedCommand("", "");
-
-        line = line.trim();
-        if (line.isEmpty()) return new ParsedCommand("", "");
+        if (line == null || line.trim().isEmpty()) {
+            throw new IllegalArgumentException("Hey we're in a conversation...! You can't expect me to reply with you saying nothing TT");
+        }
 
         // only command
         int firstSpace = line.indexOf(' ');
@@ -14,10 +13,8 @@ public class CommandParser {
             return new ParsedCommand(line, "");
         }
 
-        // standardize the line
-        line = line.toLowerCase();
 
-        String command = line.substring(0, firstSpace);
+        String command = line.substring(0, firstSpace).toLowerCase();
         String arg = line.substring(firstSpace + 1).trim();
 
         return new ParsedCommand(command, arg);
@@ -25,34 +22,71 @@ public class CommandParser {
 
 
     public static int parseTaskNumber(String arg) {
-        // if there is no arg
-        if (arg == "") {
-            return -1;
+        if (arg == null || arg.trim().isEmpty()) {
+            throw new IllegalArgumentException("Noo.. Plz provide a task number!");
         }
-        return Integer.parseInt(arg.trim());
+        try {
+            int n = Integer.parseInt(arg.trim());
+            if (n <= 0) {
+                throw new IllegalArgumentException("Noo... task number must be positive!");
+            }
+            return n;
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Noo... task number must be an integer!");
+        }
+
     }
 
     public static ParsedDeadline deadlineParser(String arg) {
-        int byPos = arg.indexOf("/by");
-        if (byPos < 0) throw new IllegalArgumentException("Missing /by");
+        if (arg == null || arg.trim().isEmpty()) {
+            throw new IllegalArgumentException("Ooops... missing task description! TT");
+        }
+
+        String lower = arg.toLowerCase();
+        int byPos = lower.indexOf("/by");
+        if (byPos < 0) {
+            // if there is no "/by"
+            throw new IllegalArgumentException("Oops.. missing /by!");
+        }
 
         String des = arg.substring(0, byPos).trim();
         String by = arg.substring(byPos + 3).trim();
 
-        if (des.isEmpty() || by.isEmpty()) throw new IllegalArgumentException("Bad deadline format");
+        if (des.isEmpty()) {
+            throw new IllegalArgumentException("Ooops... missing task description! TT");
+        }
+
+        if (by.isEmpty()) {
+            throw new IllegalArgumentException("Ooops... missing task deadline! TT");
+        }
+
         return new ParsedDeadline(des, by);
     }
 
     public static ParsedEvent eventParser(String arg) {
-        int fromPos = arg.indexOf("/from");
-        int toPos = arg.indexOf("/to");
-        if (fromPos < 0 || toPos < 0 || toPos <= fromPos) throw new IllegalArgumentException("Bad event format");
+        if (arg == null || arg.trim().isEmpty()) {
+            throw new IllegalArgumentException("Ooops... missing task description! TT");
+        }
+
+        String lower = arg.toLowerCase();
+        int fromPos = lower.indexOf("/from");
+        int toPos = lower.indexOf("/to");
+
+        if (fromPos < 0 || toPos < 0 || toPos <= fromPos) {
+            throw new IllegalArgumentException("Oops.. missing time description!");
+        }
 
         String des = arg.substring(0, fromPos).trim();
         String from = arg.substring(fromPos + 5, toPos).trim();
         String to = arg.substring(toPos + 3).trim();
 
-        if (des.isEmpty() || from.isEmpty() || to.isEmpty()) throw new IllegalArgumentException("Bad event format");
+        if (des.isEmpty()) {
+            throw new IllegalArgumentException("Ooops... missing task description! TT");
+        }
+        if (from.isEmpty() || to.isEmpty()) {
+            throw new IllegalArgumentException("Oops.. missing time description!");
+        }
+
         return new ParsedEvent(des, from, to);
     }
 
