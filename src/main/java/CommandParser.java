@@ -1,6 +1,7 @@
 public class CommandParser {
 
     // essentially, a parser based on where the first space is
+    // [command arg] -> [command] + [arg]
     public static ParsedCommand lineParser(String line) {
         // no command and arg
         if (line == null || line.trim().isEmpty()) {
@@ -38,6 +39,7 @@ public class CommandParser {
 
     }
 
+    // [des + by] -> [des] + [by]
     public static ParsedDeadline deadlineParser(String arg) {
         if (arg == null || arg.trim().isEmpty()) {
             throw new IllegalArgumentException("Ooops... missing task description! TT");
@@ -64,6 +66,7 @@ public class CommandParser {
         return new ParsedDeadline(des, by);
     }
 
+    // [arg] -> [des] + [to] + [from]
     public static ParsedEvent eventParser(String arg) {
         if (arg == null || arg.trim().isEmpty()) {
             throw new IllegalArgumentException("Ooops... missing task description! TT");
