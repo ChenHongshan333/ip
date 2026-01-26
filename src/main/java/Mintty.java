@@ -42,20 +42,24 @@ public class Mintty {
     Storage storage = new Storage(Paths.get("data", "mintty.txt"), new Formatter());
 
     // a list of tasks
-    List<Task> list = new ArrayList<>();
+    TaskList list = new TaskList();
 
     public void run() {
         // start Mintty
-        printGreeting();
+        Ui.printGreeting();
 
-        // start the storage
-        list.addAll(storage.load());
+        // reload the storage from the result of running Mintty last time
+        list.load(storage.load());
 
         // entering events
         while (true) {
             try {
                 // get user input
                 String userInput = readUserInput();
+                if (userInput == null) {
+                    Ui.printGoodbye();
+                    return;
+                }
 
                 // Parse the input (command + arg)
                 var parsed = CommandParser.lineParser(userInput);
@@ -65,21 +69,32 @@ public class Mintty {
                 // based on different prompt, do different things
                 switch (command) {
                     case BYE :
-                        handleExit();
+                        Ui.printGoodbye();
                         return;
 
                     case LIST :
-                        handleList();
+                        Ui.printList(list);
                         break;
 
                     case MARK :
                         int n = CommandParser.parseTaskNumber(arg);
-                        handleMark(n, true);
+                        Task markedTask = list.setTask(n, true);
+                        Ui.printMarkedTask(markedTask);
+                        storage.save(list.getList());
                         break;
 
                     case UNMARK :
                         int m = CommandParser.parseTaskNumber(arg);
-                        handleMark(m, false);
+                        Task unmarkedTask = list.setTask(m, false);
+                        Ui.printMarkedTask(unmarkedTask);
+                        storage.save(list.getList());
+                        break;
+
+                    case DELETE :
+                        int r = CommandParser.parseTaskNumber(arg);
+                        Task removed = list.remove(r);
+                        Ui.printDelete(removed, list.size());
+                        storage.save(list.getList());
                         break;
 
                     case TODO :
@@ -99,50 +114,19 @@ public class Mintty {
                         handleTask(eventTask);
                         break;
 
-                    case DELETE :
-                        int r = CommandParser.parseTaskNumber(arg);
-                        handleDelete(r);
-                        break;
-
                     default:
                         throw new IllegalArgumentException("Oops!! I don't know what you're saying TT. Is there a typo?");
                 }
 
             } catch (IllegalArgumentException e) {
-                System.out.println(separator);
-                System.out.println(e.getMessage());
-                System.out.println(separator);
+                Ui.printException(e.getMessage());
+            } finally {
+                sc.close();
             }
 
         }
 
 
-    }
-
-    public void handleExit() {
-        printGoodbye();
-        closeResources();
-    }
-
-    public void handleList() {
-        printList();
-    }
-
-    public void handleMark(int n, boolean b) {
-        if (n <= 0 || n > list.size()) {
-            throw new IllegalArgumentException("Oops... It is illegal to enter: " + n + "... plz enter a valid task number again!");
-        }
-        Task t = updateTaskStatus(n, b);
-        if (t == null) {
-            if (b) {
-                throw new IllegalArgumentException("Oops... you can't mark nothing!");
-            } else {
-                throw new IllegalArgumentException("Oops... you can't unmark nothing!");
-            }
-        } else {
-            printMarkedTask(t);
-            storage.save(list);
-        }
     }
 
 
@@ -152,105 +136,16 @@ public class Mintty {
             throw new IllegalArgumentException("Ooops... missing task description! TT");
         }
 
-        // print user msg
-        printAddedMsg(task);
-
-        // add user input to the list
-        addUserInput(task);
-
-        // save the added task
-        storage.save(list);
-    }
-
-    public void handleDelete(int number) {
-        if (number <= 0 || number > list.size()) {
-            throw new IllegalArgumentException("Oops... It is illegal to enter: " + number + "... plz enter a valid task number again!");
-        }
-        printDelete(number);
-        list.remove(number - 1);
-        storage.save(list);
-    }
-
-
-    public void printGreeting() {
-        System.out.println(separator);
-        System.out.println("Heyyy this is Mintty ~\nWhat can I do for you?");
-        System.out.println(separator);
+        list.add(task);
+        Ui.printAddedMsg(task, list.size());
+        storage.save(list.getList());
     }
 
     public String readUserInput() {
-        return  sc.nextLine();
-    }
-
-    public void addUserInput(Task task) {
-        list.add(task);
-    }
-
-    public void printGoodbye() {
-        System.out.println(separator);
-        System.out.println("Nice to talk to you ^^\nSee you!");
-        System.out.println(separator);
-    }
-
-    public void closeResources() {
-        sc.close();
-    }
-
-    public void printAddedMsg(Task task) {
-        System.out.println(separator);
-        System.out.println("Okie!! I've added this to the task list:\n"
-                + task.toString()
-                + "\nNow you have " + (list.size()+1) + " tasks in total");
-        System.out.println(separator);
-    }
-
-    public void printList() {
-        int index = 1;
-        System.out.println(separator);
-        if (list.isEmpty()) {
-            System.out.println("There is no task in your list QAQ");
-            System.out.println(separator);
-            return;
+        if (!sc.hasNextLine()) {
+            return null;
         }
-
-        System.out.println("Here are the tasks in your list: ");
-        for (Task t : list) {
-            System.out.println(index + "." + t.toString());
-            index++;
-        }
-        System.out.println(separator);
-    }
-
-    public Task updateTaskStatus(int number, boolean b) {
-        int index = number - 1;
-        if (index >= 0 && index < list.size()) {
-            Task t = list.get(index);
-            if (b) {
-                t.setDone();
-            } else {
-                t.setUndone();
-            }
-            return t;
-        }
-        return null;
-    }
-
-    public void printMarkedTask(Task t) {
-        System.out.println(separator);
-        if (t.getStatus()) {
-            System.out.println("Niceee! I've marked this task as done: \n" + t.toString());
-        } else {
-            System.out.println("Okie, I've marked this task as not done yet: \n" + t.toString());
-        }
-        System.out.println(separator);
-    }
-
-    public void printDelete(int number) {
-        System.out.println(separator);
-        System.out.println("Okie!! I've removed this to from the task list:\n"
-                + list.get(number - 1).toString()
-                + "\nNow you have " + (list.size() - 1) + " tasks in total.");
-        System.out.println(separator);
+        return sc.nextLine();
     }
 
 }
