@@ -4,11 +4,16 @@ public class Deadline extends Task {
 
     public Deadline(String description, String by) {
         super(description);
-        this.by = by;
+        this.by = by.trim();
     }
 
     @Override
     public String toString() {
-        return "[D]" + CommandParser.deadlineParser(super.toString()).des() + " (by: " + by + ")";
+        return "[D]" + super.toString() + " (by: " + by + ")";
+    }
+
+    @Override
+    public String toStorageString() {
+        return "D | " + taskStatus() + " | " + getDescription() + " | " + by;
     }
 }

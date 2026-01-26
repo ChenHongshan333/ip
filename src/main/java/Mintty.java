@@ -1,3 +1,4 @@
+import java.nio.file.Paths;
 import java.util.*;
 
 public class Mintty {
@@ -38,13 +39,17 @@ public class Mintty {
 
     Scanner sc = new Scanner(System.in);
     String separator = "-".repeat(50);
+    Storage storage = new Storage(Paths.get("data", "mintty.txt"), new Formatter());
 
     // a list of tasks
     List<Task> list = new ArrayList<>();
 
     public void run() {
-        // start
+        // start Mintty
         printGreeting();
+
+        // start the storage
+        list.addAll(storage.load());
 
         // entering events
         while (true) {
@@ -55,7 +60,7 @@ public class Mintty {
                 // Parse the input (command + arg)
                 var parsed = CommandParser.lineParser(userInput);
                 Command command = parsed.command();
-                String arg = parsed.arg();
+                String arg = parsed.arg(); // may contain by / from / to
 
                 // based on different prompt, do different things
                 switch (command) {
@@ -84,13 +89,13 @@ public class Mintty {
 
                     case DEADLINE :
                         var dParts = CommandParser.deadlineParser(arg);
-                        Task ddlTask = new Deadline(arg, dParts.by());
+                        Task ddlTask = new Deadline(dParts.des(), dParts.by());
                         handleTask(ddlTask);
                         break;
 
                     case EVENT :
                         var eParts = CommandParser.eventParser(arg);
-                        Task eventTask = new Event(arg, eParts.from(), eParts.to());
+                        Task eventTask = new Event(eParts.des(), eParts.from(), eParts.to());
                         handleTask(eventTask);
                         break;
 
@@ -136,6 +141,7 @@ public class Mintty {
             }
         } else {
             printMarkedTask(t);
+            storage.save(list);
         }
     }
 
@@ -151,6 +157,9 @@ public class Mintty {
 
         // add user input to the list
         addUserInput(task);
+
+        // save the added task
+        storage.save(list);
     }
 
     public void handleDelete(int number) {
@@ -159,6 +168,7 @@ public class Mintty {
         }
         printDelete(number);
         list.remove(number - 1);
+        storage.save(list);
     }
 
 
