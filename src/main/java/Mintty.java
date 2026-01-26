@@ -70,6 +70,7 @@ public class Mintty {
                 switch (command) {
                     case BYE :
                         Ui.printGoodbye();
+                        sc.close();
                         return;
 
                     case LIST :
@@ -99,19 +100,28 @@ public class Mintty {
 
                     case TODO :
                         Task todoTask = new Todo(arg);
-                        handleTask(todoTask);
+                        list.add(todoTask);
+                        // handleTask(todoTask);
+                        Ui.printAddedMsg(todoTask, list.size());
+                        storage.save(list.getList());
                         break;
 
                     case DEADLINE :
                         var dParts = CommandParser.deadlineParser(arg);
                         Task ddlTask = new Deadline(dParts.des(), dParts.by());
-                        handleTask(ddlTask);
+                        // handleTask(ddlTask);
+                        list.add(ddlTask);
+                        Ui.printAddedMsg(ddlTask, list.size());
+                        storage.save(list.getList());
                         break;
 
                     case EVENT :
                         var eParts = CommandParser.eventParser(arg);
                         Task eventTask = new Event(eParts.des(), eParts.from(), eParts.to());
-                        handleTask(eventTask);
+                        // handleTask(eventTask);
+                        list.add(eventTask);
+                        Ui.printAddedMsg(eventTask, list.size());
+                        storage.save(list.getList());
                         break;
 
                     default:
@@ -120,26 +130,23 @@ public class Mintty {
 
             } catch (IllegalArgumentException e) {
                 Ui.printException(e.getMessage());
-            } finally {
-                sc.close();
             }
-
         }
 
 
     }
 
 
-    public void handleTask(Task task) {
-        String des = task.getDescription();
-        if (des == null || des.isEmpty()) {
-            throw new IllegalArgumentException("Ooops... missing task description! TT");
-        }
-
-        list.add(task);
-        Ui.printAddedMsg(task, list.size());
-        storage.save(list.getList());
-    }
+//    public void handleTask(Task task) {
+//        String des = task.getDescription();
+//        if (des == null || des.isEmpty()) {
+//            throw new IllegalArgumentException("Ooops... missing task description! TT");
+//        }
+//
+//        list.add(task);
+//        Ui.printAddedMsg(task, list.size());
+//        storage.save(list.getList());
+//    }
 
     public String readUserInput() {
         if (!sc.hasNextLine()) {

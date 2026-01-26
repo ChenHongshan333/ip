@@ -9,6 +9,10 @@ public class TaskList {
     }
 
     public void add(Task t) {
+        String des = t.getDescription();
+        if (des == null || des.isEmpty()) {
+            throw new IllegalArgumentException("Ooops... missing task description! TT");
+        }
         list.add(t);
     }
 
