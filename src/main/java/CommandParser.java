@@ -1,3 +1,6 @@
+import java.time.DateTimeException;
+import java.time.LocalDateTime;
+
 public class CommandParser {
 
     // essentially, a parser based on where the first space is
@@ -53,17 +56,24 @@ public class CommandParser {
         }
 
         String des = arg.substring(0, byPos).trim();
-        String by = arg.substring(byPos + 3).trim();
-
         if (des.isEmpty()) {
             throw new IllegalArgumentException("Ooops... missing task description! TT");
         }
 
-        if (by.isEmpty()) {
+        String raw = arg.substring(byPos + 3).trim();
+        if (raw.isEmpty()) {
             throw new IllegalArgumentException("Ooops... missing task deadline! TT");
         }
 
-        return new ParsedDeadline(des, by);
+        try {
+            LocalDateTime by = DateTimeParser.parse(raw);
+            return new ParsedDeadline(des, by);
+        } catch (DateTimeException e) {
+            throw new IllegalArgumentException("Invalid date (T^T) Make sure using the format:\n" +
+                    "2026.1.26 8pm\n" +
+                    "2026-1-26 20:00\n" +
+                    "2026/1/26 20");
+        }
     }
 
     // [arg] -> [des] + [to] + [from]
@@ -81,17 +91,27 @@ public class CommandParser {
         }
 
         String des = arg.substring(0, fromPos).trim();
-        String from = arg.substring(fromPos + 5, toPos).trim();
-        String to = arg.substring(toPos + 3).trim();
-
         if (des.isEmpty()) {
             throw new IllegalArgumentException("Ooops... missing task description! TT");
         }
-        if (from.isEmpty() || to.isEmpty()) {
+
+        String dateF = arg.substring(fromPos + 5, toPos).trim();
+        String dateT = arg.substring(toPos + 3).trim();
+
+        if (dateF.isEmpty() || dateT.isEmpty()) {
             throw new IllegalArgumentException("Oops.. missing time description!");
         }
 
-        return new ParsedEvent(des, from, to);
+        try {
+            LocalDateTime from = DateTimeParser.parse(dateF);
+            LocalDateTime to = DateTimeParser.parse(dateT);
+            return new ParsedEvent(des, from, to);
+        } catch (DateTimeException e) {
+            throw new IllegalArgumentException("Invalid date (T^T) Make sure using the format:\n" +
+                    "2026.1.26 8pm\n" +
+                    "2026-1-26 20:00\n" +
+                    "2026/1/26 20");
+        }
     }
 
 
@@ -111,31 +131,31 @@ public class CommandParser {
 
     public static class ParsedDeadline {
         private final String des;
-        private final String by;
+        private final LocalDateTime by;
 
-        public ParsedDeadline(String des, String by) {
+        public ParsedDeadline(String des, LocalDateTime by) {
             this.des = des;
             this.by = by;
         }
 
         public String des() {return des;}
-        public String by() {return by;}
+        public LocalDateTime by() {return by;}
     }
 
     public static class ParsedEvent {
         private final String des;
-        private final String from;
-        private final String to;
+        private final LocalDateTime from;
+        private final LocalDateTime to;
 
-        public ParsedEvent(String des, String from, String to) {
+        public ParsedEvent(String des, LocalDateTime from, LocalDateTime to) {
             this.des = des;
             this.from = from;
             this.to = to;
         }
 
         public String des() { return des;}
-        public String from() { return from;}
-        public String to() {return to;}
+        public LocalDateTime from() { return from;}
+        public LocalDateTime to() {return to;}
     }
 
 }

@@ -1,19 +1,28 @@
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+
 public class Deadline extends Task {
 
-    protected String by;
+    protected LocalDateTime by;
+//    static final DateTimeFormatter OUT_DATE =
+//            DateTimeFormatter.ofPattern("MMM d yyyy", Locale.ENGLISH);
+    static final DateTimeFormatter OUT_DATETIME =
+            DateTimeFormatter.ofPattern("yyyy-MMM-d HH:mm", Locale.ENGLISH); // 26 Jan 26 20:00
 
-    public Deadline(String description, String by) {
+    public Deadline(String description, LocalDateTime by) {
         super(description);
-        this.by = by.trim();
+        this.by = by;
     }
+
 
     @Override
     public String toString() {
-        return "[D]" + super.toString() + " (by: " + by + ")";
+        return "[D]" + super.toString() + " (by: " + by.format(OUT_DATETIME)  + ")";
     }
 
     @Override
     public String toStorageString() {
-        return "D | " + taskStatus() + " | " + getDescription() + " | " + by;
+        return "D | " + taskStatus() + " | " + getDescription() + " | " + by.toString();
     }
 }

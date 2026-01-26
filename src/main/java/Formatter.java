@@ -1,3 +1,5 @@
+import java.time.LocalDateTime;
+
 public class Formatter {
 
     // type | taskStatus | description (des / des + by / des + from + to)
@@ -30,7 +32,8 @@ public class Formatter {
                     throw new IllegalArgumentException("Missing components in the file TT: " + line);
                 }
                 String d1 = decoded[2].trim();
-                String by = decoded[3].trim();
+                String t1 = decoded[3].trim();
+                LocalDateTime by = LocalDateTime.parse(t1);
                 t = new Deadline(d1, by);
                 break;
             case "E":
@@ -39,8 +42,10 @@ public class Formatter {
                     throw new IllegalArgumentException("Missing components in the file TT: " + line);
                 }
                 String d2 = decoded[2].trim();
-                String from = decoded[3].trim();
-                String to = decoded[4].trim();
+                String t2 = decoded[3].trim();
+                String t3 = decoded[4].trim();
+                LocalDateTime from = LocalDateTime.parse(t2);
+                LocalDateTime to = LocalDateTime.parse(t3);
                 t = new Event(d2, from, to);
                 break;
             default:
