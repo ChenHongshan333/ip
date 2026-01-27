@@ -65,44 +65,44 @@ public class Mintty {
 
                 // based on different prompt, do different things
                 switch (command) {
-                    case Command.BYE :
+                    case BYE :
                         ui.printGoodbye();
                         sc.close();
                         return;
 
-                    case Command.LIST :
+                    case LIST :
                         ui.printList(list);
                         break;
 
-                    case Command.MARK :
+                    case MARK :
                         int n = parser.parseTaskNumber(arg);
                         Task markedTask = list.setTask(n, true);
                         ui.printMarkedTask(markedTask);
                         storage.save(list.getList());
                         break;
 
-                    case Command.UNMARK :
+                    case UNMARK :
                         int m = parser.parseTaskNumber(arg);
                         Task unmarkedTask = list.setTask(m, false);
                         ui.printMarkedTask(unmarkedTask);
                         storage.save(list.getList());
                         break;
 
-                    case Command.DELETE :
+                    case DELETE :
                         int r = parser.parseTaskNumber(arg);
                         Task removed = list.remove(r);
                         ui.printDelete(removed, list.size());
                         storage.save(list.getList());
                         break;
 
-                    case Command.TODO :
+                    case TODO :
                         Task todoTask = new Todo(arg);
                         list.add(todoTask);
                         ui.printAddedMsg(todoTask, list.size());
                         storage.save(list.getList());
                         break;
 
-                    case Command.DEADLINE :
+                    case DEADLINE :
                         var dParts = parser.deadlineParser(arg);
                         Task ddlTask = new Deadline(dParts.des(), dParts.by());
                         list.add(ddlTask);
@@ -110,7 +110,7 @@ public class Mintty {
                         storage.save(list.getList());
                         break;
 
-                    case Command.EVENT :
+                    case EVENT :
                         var eParts = parser.eventParser(arg);
                         Task eventTask = new Event(eParts.des(), eParts.from(), eParts.to());
                         list.add(eventTask);
