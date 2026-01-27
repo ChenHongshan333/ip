@@ -3,19 +3,19 @@ import java.util.List;
 public class Ui {
     protected static final String separator = "-".repeat(50);
 
-    public static void printGreeting() {
+    public void printGreeting() {
         System.out.println(separator);
         System.out.println("Heyyy this is Mintty ~\nWhat can I do for you?");
         System.out.println(separator);
     }
 
-    public static void printGoodbye() {
+    public void printGoodbye() {
         System.out.println(separator);
         System.out.println("Nice to talk to you ^^\nSee you!");
         System.out.println(separator);
     }
 
-    public static void printAddedMsg(Task task, int newSize) {
+    public void printAddedMsg(Task task, int newSize) {
         System.out.println(separator);
         System.out.println("Okie!! I've added this to the task list:\n"
                 + task.toString()
@@ -23,7 +23,7 @@ public class Ui {
         System.out.println(separator);
     }
 
-    public static void printList(TaskList list) {
+    public void printList(TaskList list) {
         int index = 1;
         System.out.println(separator);
         if (list.size() == 0) {
@@ -40,7 +40,7 @@ public class Ui {
         System.out.println(separator);
     }
 
-    public static void printMarkedTask(Task t) {
+    public void printMarkedTask(Task t) {
         System.out.println(separator);
         if (t.getStatus()) {
             System.out.println("Niceee! I've marked this task as done: \n" + t.toString());
@@ -50,7 +50,7 @@ public class Ui {
         System.out.println(separator);
     }
 
-    public static void printDelete(Task task, int newSize) {
+    public void printDelete(Task task, int newSize) {
         System.out.println(separator);
         System.out.println("Okie!! I've removed this to from the task list:\n"
                 + task.toString()
@@ -58,7 +58,7 @@ public class Ui {
         System.out.println(separator);
     }
 
-    public static void printException(String msg) {
+    public void printException(String msg) {
         System.out.println(separator);
         System.out.println(msg);
         System.out.println(separator);

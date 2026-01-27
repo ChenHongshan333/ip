@@ -43,10 +43,11 @@ public class Mintty {
 
     // a list of tasks
     TaskList list = new TaskList();
+    Ui ui = new Ui();
 
     public void run() {
         // start Mintty
-        Ui.printGreeting();
+        ui.printGreeting();
 
         // reload the storage from the result of running Mintty last time
         list.load(storage.load());
@@ -57,7 +58,7 @@ public class Mintty {
                 // get user input
                 String userInput = readUserInput();
                 if (userInput == null) {
-                    Ui.printGoodbye();
+                    ui.printGoodbye();
                     return;
                 }
 
@@ -69,32 +70,32 @@ public class Mintty {
                 // based on different prompt, do different things
                 switch (command) {
                     case BYE :
-                        Ui.printGoodbye();
+                        ui.printGoodbye();
                         sc.close();
                         return;
 
                     case LIST :
-                        Ui.printList(list);
+                        ui.printList(list);
                         break;
 
                     case MARK :
                         int n = CommandParser.parseTaskNumber(arg);
                         Task markedTask = list.setTask(n, true);
-                        Ui.printMarkedTask(markedTask);
+                        ui.printMarkedTask(markedTask);
                         storage.save(list.getList());
                         break;
 
                     case UNMARK :
                         int m = CommandParser.parseTaskNumber(arg);
                         Task unmarkedTask = list.setTask(m, false);
-                        Ui.printMarkedTask(unmarkedTask);
+                        ui.printMarkedTask(unmarkedTask);
                         storage.save(list.getList());
                         break;
 
                     case DELETE :
                         int r = CommandParser.parseTaskNumber(arg);
                         Task removed = list.remove(r);
-                        Ui.printDelete(removed, list.size());
+                        ui.printDelete(removed, list.size());
                         storage.save(list.getList());
                         break;
 
@@ -102,7 +103,7 @@ public class Mintty {
                         Task todoTask = new Todo(arg);
                         list.add(todoTask);
                         // handleTask(todoTask);
-                        Ui.printAddedMsg(todoTask, list.size());
+                        ui.printAddedMsg(todoTask, list.size());
                         storage.save(list.getList());
                         break;
 
@@ -111,7 +112,7 @@ public class Mintty {
                         Task ddlTask = new Deadline(dParts.des(), dParts.by());
                         // handleTask(ddlTask);
                         list.add(ddlTask);
-                        Ui.printAddedMsg(ddlTask, list.size());
+                        ui.printAddedMsg(ddlTask, list.size());
                         storage.save(list.getList());
                         break;
 
@@ -120,7 +121,7 @@ public class Mintty {
                         Task eventTask = new Event(eParts.des(), eParts.from(), eParts.to());
                         // handleTask(eventTask);
                         list.add(eventTask);
-                        Ui.printAddedMsg(eventTask, list.size());
+                        ui.printAddedMsg(eventTask, list.size());
                         storage.save(list.getList());
                         break;
 
@@ -129,7 +130,7 @@ public class Mintty {
                 }
 
             } catch (IllegalArgumentException e) {
-                Ui.printException(e.getMessage());
+                ui.printException(e.getMessage());
             }
         }
 
