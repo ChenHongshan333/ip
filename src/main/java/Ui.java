@@ -1,4 +1,5 @@
 import java.util.List;
+import java.util.Scanner;
 
 public class Ui {
     protected static final String separator = "-".repeat(50);
@@ -62,5 +63,12 @@ public class Ui {
         System.out.println(separator);
         System.out.println(msg);
         System.out.println(separator);
+    }
+
+    public String readUserInput(Scanner sc) {
+        if (!sc.hasNextLine()) {
+            return null;
+        }
+        return sc.nextLine();
     }
 }
