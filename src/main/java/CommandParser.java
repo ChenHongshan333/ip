@@ -5,7 +5,7 @@ public class CommandParser {
 
     // essentially, a parser based on where the first space is
     // [command arg] -> [command] + [arg]
-    public static ParsedCommand lineParser(String line) {
+    public ParsedCommand lineParser(String line) {
         // no command and arg
         if (line == null || line.trim().isEmpty()) {
             throw new IllegalArgumentException("Hey we're in a conversation...! You can't expect me to reply with you saying nothing TT");
@@ -14,19 +14,19 @@ public class CommandParser {
         // only command
         int firstSpace = line.indexOf(' ');
         if (firstSpace == -1) {
-            return new ParsedCommand(Mintty.Command.from(line), "");
+            return new ParsedCommand(Command.from(line), "");
         }
 
 
         String command = line.substring(0, firstSpace).toLowerCase();
-        Mintty.Command cmd = Mintty.Command.from(command);
+        Command cmd = Command.from(command);
         String arg = line.substring(firstSpace + 1).trim();
 
         return new ParsedCommand(cmd, arg);
     }
 
 
-    public static int parseTaskNumber(String arg) {
+    public int parseTaskNumber(String arg) {
         if (arg == null || arg.trim().isEmpty()) {
             throw new IllegalArgumentException("Noo.. Plz provide a task number!");
         }
@@ -43,7 +43,7 @@ public class CommandParser {
     }
 
     // [des + by] -> [des] + [by]
-    public static ParsedDeadline deadlineParser(String arg) {
+    public ParsedDeadline deadlineParser(String arg) {
         if (arg == null || arg.trim().isEmpty()) {
             throw new IllegalArgumentException("Ooops... missing task description! TT");
         }
@@ -77,7 +77,7 @@ public class CommandParser {
     }
 
     // [arg] -> [des] + [to] + [from]
-    public static ParsedEvent eventParser(String arg) {
+    public ParsedEvent eventParser(String arg) {
         if (arg == null || arg.trim().isEmpty()) {
             throw new IllegalArgumentException("Ooops... missing task description! TT");
         }
@@ -115,21 +115,21 @@ public class CommandParser {
     }
 
 
-    public static final class ParsedCommand {
-        private final Mintty.Command command;
+    public final class ParsedCommand {
+        private final Command command;
         private final String arg;
 
-        public ParsedCommand(Mintty.Command command, String arg) {
+        public ParsedCommand(Command command, String arg) {
             this.command = command;
             this.arg = arg;
         }
 
-        public Mintty.Command command() { return command; }
+        public Command command() { return command; }
         public String arg() { return arg; }
     }
 
 
-    public static class ParsedDeadline {
+    public class ParsedDeadline {
         private final String des;
         private final LocalDateTime by;
 
@@ -142,7 +142,7 @@ public class CommandParser {
         public LocalDateTime by() {return by;}
     }
 
-    public static class ParsedEvent {
+    public class ParsedEvent {
         private final String des;
         private final LocalDateTime from;
         private final LocalDateTime to;
