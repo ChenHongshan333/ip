@@ -1,19 +1,19 @@
 --------------------------------------------------
-Heyyy this is Mintty ~
+Heyyy this is mintty.Mintty ~
 What can I do for you?
 --------------------------------------------------
 --------------------------------------------------
-Okie!! I've added this to the task list:
+Okie!! I've added this to the mintty.task list:
 [T][ ] take shower
 Now you have 1 tasks in total
 --------------------------------------------------
 --------------------------------------------------
-Okie!! I've added this to the task list:
+Okie!! I've added this to the mintty.task list:
 [D][ ] submit wk2 ip (by: fri 16:00)
 Now you have 2 tasks in total
 --------------------------------------------------
 --------------------------------------------------
-Okie!! I've added this to the task list:
+Okie!! I've added this to the mintty.task list:
 [E][ ] porcupine neighbourhood night (from: sun 19:00 to: sun 20:30)
 Now you have 3 tasks in total
 --------------------------------------------------
@@ -24,15 +24,15 @@ Here are the tasks in your list:
 3.[E][ ] porcupine neighbourhood night (from: sun 19:00 to: sun 20:30)
 --------------------------------------------------
 --------------------------------------------------
-Niceee! I've marked this task as done: 
+Niceee! I've marked this mintty.task as done:
 [T][X] take shower
 --------------------------------------------------
 --------------------------------------------------
-Niceee! I've marked this task as done: 
+Niceee! I've marked this mintty.task as done:
 [D][X] submit wk2 ip (by: fri 16:00)
 --------------------------------------------------
 --------------------------------------------------
-Okie, I've marked this task as not done yet: 
+Okie, I've marked this mintty.task as not done yet:
 [T][ ] take shower
 --------------------------------------------------
 --------------------------------------------------

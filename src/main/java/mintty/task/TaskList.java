@@ -1,3 +1,5 @@
+package mintty.task;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +13,7 @@ public class TaskList {
     public void add(Task t) {
         String des = t.getDescription();
         if (des == null || des.isEmpty()) {
-            throw new IllegalArgumentException("Ooops... missing task description! TT");
+            throw new IllegalArgumentException("Ooops... missing mintty.task description! TT");
         }
         list.add(t);
     }
@@ -26,7 +28,7 @@ public class TaskList {
 
     private Task getByNumber(int taskNumber) {
         if (taskNumber <= 0 || taskNumber > list.size()) {
-            throw new IllegalArgumentException("Oops... It is illegal to enter: " + taskNumber + "... plz enter a valid task number again!");
+            throw new IllegalArgumentException("Oops... It is illegal to enter: " + taskNumber + "... plz enter a valid mintty.task number again!");
         }
         return list.get(taskNumber - 1);
     }

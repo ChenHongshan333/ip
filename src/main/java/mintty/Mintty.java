@@ -1,3 +1,16 @@
+package mintty;
+
+import mintty.parser.Command;
+import mintty.parser.CommandParser;
+import mintty.storage.Storage;
+import mintty.storage.Formatter;
+import mintty.task.Deadline;
+import mintty.task.Task;
+import mintty.task.TaskList;
+import mintty.task.Todo;
+import mintty.task.Event;
+import mintty.ui.Ui;
+
 import java.nio.file.Paths;
 import java.util.*;
 
@@ -28,7 +41,7 @@ public class Mintty {
 
 
     public void run() {
-        // start Mintty
+        // start mintty.Mintty
         ui.printGreeting();
 
         // create scanner
@@ -52,44 +65,44 @@ public class Mintty {
 
                 // based on different prompt, do different things
                 switch (command) {
-                    case BYE :
+                    case Command.BYE :
                         ui.printGoodbye();
                         sc.close();
                         return;
 
-                    case LIST :
+                    case Command.LIST :
                         ui.printList(list);
                         break;
 
-                    case MARK :
+                    case Command.MARK :
                         int n = parser.parseTaskNumber(arg);
                         Task markedTask = list.setTask(n, true);
                         ui.printMarkedTask(markedTask);
                         storage.save(list.getList());
                         break;
 
-                    case UNMARK :
+                    case Command.UNMARK :
                         int m = parser.parseTaskNumber(arg);
                         Task unmarkedTask = list.setTask(m, false);
                         ui.printMarkedTask(unmarkedTask);
                         storage.save(list.getList());
                         break;
 
-                    case DELETE :
+                    case Command.DELETE :
                         int r = parser.parseTaskNumber(arg);
                         Task removed = list.remove(r);
                         ui.printDelete(removed, list.size());
                         storage.save(list.getList());
                         break;
 
-                    case TODO :
+                    case Command.TODO :
                         Task todoTask = new Todo(arg);
                         list.add(todoTask);
                         ui.printAddedMsg(todoTask, list.size());
                         storage.save(list.getList());
                         break;
 
-                    case DEADLINE :
+                    case Command.DEADLINE :
                         var dParts = parser.deadlineParser(arg);
                         Task ddlTask = new Deadline(dParts.des(), dParts.by());
                         list.add(ddlTask);
@@ -97,7 +110,7 @@ public class Mintty {
                         storage.save(list.getList());
                         break;
 
-                    case EVENT :
+                    case Command.EVENT :
                         var eParts = parser.eventParser(arg);
                         Task eventTask = new Event(eParts.des(), eParts.from(), eParts.to());
                         list.add(eventTask);

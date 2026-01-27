@@ -1,3 +1,10 @@
+package mintty.storage;
+
+import mintty.task.Deadline;
+import mintty.task.Event;
+import mintty.task.Task;
+import mintty.task.Todo;
+
 import java.time.LocalDateTime;
 
 public class Formatter {
@@ -10,7 +17,7 @@ public class Formatter {
         return task.toStorageString();
     }
 
-    // convert string in files into code that can be recognized by Mintty
+    // convert string in files into code that can be recognized by mintty.Mintty
     public Task decode(String line) {
         String[] decoded = line.split(SEP_REGEX);
         if (decoded.length < 3) {
@@ -49,7 +56,7 @@ public class Formatter {
                 t = new Event(d2, from, to);
                 break;
             default:
-                throw new IllegalArgumentException("Uncategorized task TT" + line);
+                throw new IllegalArgumentException("Uncategorized mintty.task TT" + line);
         }
 
         if (status) {

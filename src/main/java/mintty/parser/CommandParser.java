@@ -1,9 +1,11 @@
+package mintty.parser;
+
 import java.time.DateTimeException;
 import java.time.LocalDateTime;
 
 public class CommandParser {
 
-    // essentially, a parser based on where the first space is
+    // essentially, a mintty.parser based on where the first space is
     // [command arg] -> [command] + [arg]
     public ParsedCommand lineParser(String line) {
         // no command and arg
@@ -28,16 +30,16 @@ public class CommandParser {
 
     public int parseTaskNumber(String arg) {
         if (arg == null || arg.trim().isEmpty()) {
-            throw new IllegalArgumentException("Noo.. Plz provide a task number!");
+            throw new IllegalArgumentException("Noo.. Plz provide a mintty.task number!");
         }
         try {
             int n = Integer.parseInt(arg.trim());
             if (n <= 0) {
-                throw new IllegalArgumentException("Noo... task number must be positive!");
+                throw new IllegalArgumentException("Noo... mintty.task number must be positive!");
             }
             return n;
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Noo... task number must be an integer!");
+            throw new IllegalArgumentException("Noo... mintty.task number must be an integer!");
         }
 
     }
@@ -45,7 +47,7 @@ public class CommandParser {
     // [des + by] -> [des] + [by]
     public ParsedDeadline deadlineParser(String arg) {
         if (arg == null || arg.trim().isEmpty()) {
-            throw new IllegalArgumentException("Ooops... missing task description! TT");
+            throw new IllegalArgumentException("Ooops... missing mintty.task description! TT");
         }
 
         String lower = arg.toLowerCase();
@@ -57,12 +59,12 @@ public class CommandParser {
 
         String des = arg.substring(0, byPos).trim();
         if (des.isEmpty()) {
-            throw new IllegalArgumentException("Ooops... missing task description! TT");
+            throw new IllegalArgumentException("Ooops... missing mintty.task description! TT");
         }
 
         String raw = arg.substring(byPos + 3).trim();
         if (raw.isEmpty()) {
-            throw new IllegalArgumentException("Ooops... missing task deadline! TT");
+            throw new IllegalArgumentException("Ooops... missing mintty.task deadline! TT");
         }
 
         try {
@@ -79,7 +81,7 @@ public class CommandParser {
     // [arg] -> [des] + [to] + [from]
     public ParsedEvent eventParser(String arg) {
         if (arg == null || arg.trim().isEmpty()) {
-            throw new IllegalArgumentException("Ooops... missing task description! TT");
+            throw new IllegalArgumentException("Ooops... missing mintty.task description! TT");
         }
 
         String lower = arg.toLowerCase();
@@ -92,7 +94,7 @@ public class CommandParser {
 
         String des = arg.substring(0, fromPos).trim();
         if (des.isEmpty()) {
-            throw new IllegalArgumentException("Ooops... missing task description! TT");
+            throw new IllegalArgumentException("Ooops... missing mintty.task description! TT");
         }
 
         String dateF = arg.substring(fromPos + 5, toPos).trim();

@@ -1,3 +1,5 @@
+package mintty.task;
+
 public abstract class Task {
     protected String description;
     protected boolean isDone;
@@ -9,7 +11,7 @@ public abstract class Task {
     }
 
     public String taskStatus() {
-        return (isDone ? "X" : " "); // mark done task with X
+        return (isDone ? "X" : " "); // mark done mintty.task with X
     }
 
     public String getDescription() {

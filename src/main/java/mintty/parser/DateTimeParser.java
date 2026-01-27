@@ -1,3 +1,5 @@
+package mintty.parser;
+
 import java.time.LocalDateTime;
 import java.time.format.*;
 import java.time.temporal.ChronoField;
