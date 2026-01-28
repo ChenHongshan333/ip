@@ -27,4 +27,15 @@ public class TaskListTest {
                 e.getMessage());
     }
 
+    @Test
+    public void remove_invalidNumber_throwsIllegalArgumentException() {
+        TaskList taskList = new TaskList();
+        Task task = new Todo("A");
+        taskList.add(task);
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class,
+                () -> taskList.remove(0));
+        assertEquals("Oops... It is illegal to enter: 0 ... plz enter a valid mintty.task number again!",
+                e.getMessage());
+    }
+
 }

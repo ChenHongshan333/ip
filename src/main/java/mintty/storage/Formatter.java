@@ -56,7 +56,7 @@ public class Formatter {
                 t = new Event(d2, from, to);
                 break;
             default:
-                throw new IllegalArgumentException("Uncategorized mintty.task TT" + line);
+                throw new IllegalArgumentException("Uncategorized mintty.task TT: " + line);
         }
 
         if (status) {
