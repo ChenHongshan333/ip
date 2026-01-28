@@ -112,6 +112,12 @@ public class Mintty {
                     ui.printDelete(removed, list.size());
                     storage.save(list.getList());
                     break;
+                case DELETE:
+                    int r = parser.parseTaskNumber(arg);
+                    Task removed = list.remove(r);
+                    ui.printDelete(removed, list.size());
+                    storage.save(list.getList());
+                    break;
 
                 case TODO:
                     Task todoTask = new Todo(arg);

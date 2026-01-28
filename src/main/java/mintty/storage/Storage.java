@@ -15,14 +15,14 @@ import java.util.List;
  * Represents a storage space, and bridges the code and the hard disk storage
  */
 public class Storage {
-   private Path filePath;
-   private Formatter formatter;
-   private String separator = "-".repeat(50);
+    private Path filePath;
+    private Formatter formatter;
+    private String separator = "-".repeat(50);
 
-   public Storage (Path filePath, Formatter formatter) {
-       this.filePath = filePath;
-       this.formatter = formatter;
-   }
+    public Storage(Path filePath, Formatter formatter) {
+        this.filePath = filePath;
+        this.formatter = formatter;
+    }
 
     /**
      * Loads files from the disk.
@@ -30,40 +30,40 @@ public class Storage {
      * @return A list of {@code Tasks}
      * @throws Exception if there are some corrupted lines in the file
      */
-   public List<Task> load() {
-       try {
-           // running the 1st time, the list is empty
-           if (Files.notExists(filePath)) {
-               return new ArrayList<>();
-           }
+    public List<Task> load() {
+        // load files from the disk
+        try {
+            // running the 1st time, the list is empty
+            if (Files.notExists(filePath)) {
+                return new ArrayList<>();
+            }
 
-           List<String> lines = Files.readAllLines(filePath, StandardCharsets.UTF_8);
-           List<Task> tasks = new ArrayList<>();
+            List<String> lines = Files.readAllLines(filePath, StandardCharsets.UTF_8);
+            List<Task> tasks = new ArrayList<>();
 
-           for (String line : lines) {
-               String trimmed = line.trim();
-               if (trimmed.isEmpty()) {
-                   continue;
-               }
+            for (String line : lines) {
+                String trimmed = line.trim();
+                if (trimmed.isEmpty()) {
+                    continue;
+                }
 
-               try {
-                   Task t = formatter.decode(trimmed);
-                   tasks.add(t);
-               } catch (Exception corruptedLine) {
-                   // stretch: corrupted line handling
-                   System.out.println(separator);
-                   System.out.println("! Warning: " + corruptedLine.getMessage());
-                   System.out.println(separator);
-               }
-           }
-
-           return tasks;
-       } catch (IOException e) {
-           // if it failed to read files
-           // return an empty arrayList
-           return new ArrayList<>();
-       }
-   }
+                try {
+                    Task t = formatter.decode(trimmed);
+                    tasks.add(t);
+                } catch (Exception corruptedLine) {
+                    // stretch: corrupted line handling
+                    System.out.println(separator);
+                    System.out.println("! Warning: " + corruptedLine.getMessage());
+                    System.out.println(separator);
+                }
+            }
+            return tasks;
+        } catch (IOException e) {
+            // if it failed to read files
+            // return an empty arrayList
+            return new ArrayList<>();
+        }
+    }
 
     /**
      * Saves all changes made by end-users (e.g. add tasks; mark/ unmark tasks, etc.)
@@ -94,6 +94,4 @@ public class Storage {
             System.out.println(separator);
         }
     }
-
-
 }

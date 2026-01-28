@@ -41,34 +41,34 @@ public class Formatter {
         String arg = decoded[2].trim();
 
         Task t;
-        switch(type) {
-            case "T":
-                t = new Todo(arg);
-                break;
-            case "D":
-                // expected: D | status | des | by
-                if (decoded.length < 4) {
-                    throw new IllegalArgumentException("Missing components in the file TT: " + line);
-                }
-                String d1 = decoded[2].trim();
-                String t1 = decoded[3].trim();
-                LocalDateTime by = LocalDateTime.parse(t1);
-                t = new Deadline(d1, by);
-                break;
-            case "E":
-                // expected: E | status | des | from | to
-                if (decoded.length < 5) {
-                    throw new IllegalArgumentException("Missing components in the file TT: " + line);
-                }
-                String d2 = decoded[2].trim();
-                String t2 = decoded[3].trim();
-                String t3 = decoded[4].trim();
-                LocalDateTime from = LocalDateTime.parse(t2);
-                LocalDateTime to = LocalDateTime.parse(t3);
-                t = new Event(d2, from, to);
-                break;
-            default:
-                throw new IllegalArgumentException("Uncategorized mintty.task TT: " + line);
+        switch (type) {
+        case "T":
+            t = new Todo(arg);
+            break;
+        case "D":
+            // expected: D | status | des | by
+            if (decoded.length < 4) {
+                throw new IllegalArgumentException("Missing components in the file TT: " + line);
+            }
+            String d1 = decoded[2].trim();
+            String t1 = decoded[3].trim();
+            LocalDateTime by = LocalDateTime.parse(t1);
+            t = new Deadline(d1, by);
+            break;
+        case "E":
+            // expected: E | status | des | from | to
+            if (decoded.length < 5) {
+                throw new IllegalArgumentException("Missing components in the file TT: " + line);
+            }
+            String d2 = decoded[2].trim();
+            String t2 = decoded[3].trim();
+            String t3 = decoded[4].trim();
+            LocalDateTime from = LocalDateTime.parse(t2);
+            LocalDateTime to = LocalDateTime.parse(t3);
+            t = new Event(d2, from, to);
+            break;
+        default:
+            throw new IllegalArgumentException("Uncategorized mintty.task TT: " + line);
         }
 
         if (status) {

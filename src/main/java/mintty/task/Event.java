@@ -20,7 +20,7 @@ public class Event extends Task {
 
     @Override
     public String toString() {
-        return "[E]" + super.toString() + " (from: " + from.format(OUT_DATETIME)+ " , to: " + to.format(OUT_DATETIME) + ")";
+        return "[E]" + super.toString() + " (from: " + from.format(OUT_DATETIME) + " , to: " + to.format(OUT_DATETIME) + ")";
     }
 
     @Override
