@@ -65,10 +65,6 @@ public class Storage {
        }
    }
 
-    //save all changes made by end-users
-    //create the folder if needed
-    // Overwrite the tasks
-
     /**
      * Saves all changes made by end-users (e.g. add tasks; mark/ unmark tasks, etc.)
      * Creates the folder if needed.

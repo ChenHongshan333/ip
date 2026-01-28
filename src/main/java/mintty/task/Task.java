@@ -1,5 +1,8 @@
 package mintty.task;
 
+/**
+ * Represents tasks carried out by end-users
+ */
 public abstract class Task {
     protected String description;
     protected boolean isDone;
@@ -10,6 +13,11 @@ public abstract class Task {
         this.isDone = false;
     }
 
+    /**
+     * Gets the status in the representation of string of the current {@code Task}, based on {@code isDone}
+     *
+     * @return A string that indicates if the current {@code Task} is done or not
+     */
     public String taskStatus() {
         return (isDone ? "X" : " "); // mark done mintty.task with X
     }
