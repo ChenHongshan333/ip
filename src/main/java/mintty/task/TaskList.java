@@ -28,7 +28,7 @@ public class TaskList {
 
     private Task getByNumber(int taskNumber) {
         if (taskNumber <= 0 || taskNumber > list.size()) {
-            throw new IllegalArgumentException("Oops... It is illegal to enter: " + taskNumber + "... plz enter a valid mintty.task number again!");
+            throw new IllegalArgumentException("Oops... It is illegal to enter: " + taskNumber + " ... plz enter a valid mintty.task number again!");
         }
         return list.get(taskNumber - 1);
     }
