@@ -3,6 +3,7 @@ package mintty.ui;
 import mintty.task.Task;
 import mintty.task.TaskList;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class Ui {
@@ -66,6 +67,17 @@ public class Ui {
     public void printException(String msg) {
         System.out.println(separator);
         System.out.println(msg);
+        System.out.println(separator);
+    }
+
+    public void printFind(List<Task> foundList) {
+        System.out.println(separator);
+        int index = 1;
+        System.out.println("Heyy! I've matched the following tasks in your list: ");
+        for (Task t : foundList) {
+            System.out.println(index + "." + t.toString());
+            index++;
+        }
         System.out.println(separator);
     }
 
