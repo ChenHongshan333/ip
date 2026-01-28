@@ -126,8 +126,13 @@ public class CommandParser {
             this.arg = arg;
         }
 
-        public Command command() { return command; }
-        public String arg() { return arg; }
+        public Command command() {
+            return command;
+        }
+
+        public String arg() {
+            return arg;
+        }
     }
 
 
@@ -140,8 +145,13 @@ public class CommandParser {
             this.by = by;
         }
 
-        public String des() {return des;}
-        public LocalDateTime by() {return by;}
+        public String des() {
+            return des;
+        }
+
+        public LocalDateTime by() {
+            return by;
+        }
     }
 
     public class ParsedEvent {
@@ -155,9 +165,17 @@ public class CommandParser {
             this.to = to;
         }
 
-        public String des() { return des;}
-        public LocalDateTime from() { return from;}
-        public LocalDateTime to() {return to;}
+        public String des() {
+            return des;
+        }
+
+        public LocalDateTime from() {
+            return from;
+        }
+
+        public LocalDateTime to() {
+            return to;
+        }
     }
 
 }

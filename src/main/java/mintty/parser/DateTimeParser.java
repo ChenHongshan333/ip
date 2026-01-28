@@ -20,8 +20,8 @@ public class DateTimeParser {
             .appendLiteral(' ') // a space is required between date and time
             .appendPattern("H") // hours: from 0 to 24
             .optionalStart() // optional for minutes
-                .appendLiteral(':')
-                .appendPattern("mm") // minute ranges from 0 to 59
+            .appendLiteral(':')
+            .appendPattern("mm") // minute ranges from 0 to 59
             .optionalEnd()
             .parseDefaulting(ChronoField.MINUTE_OF_HOUR, 0) // if no minute is specified, use 0 by default
             .toFormatter();
@@ -32,8 +32,8 @@ public class DateTimeParser {
             .appendLiteral(' ') // a space is required between date and time
             .appendPattern("h") // hours: from 0 to 12
             .optionalStart() // optional for minutes
-                .appendLiteral(':')
-                .appendPattern("mm") // minute ranges from 0 to 59
+            .appendLiteral(':')
+            .appendPattern("mm") // minute ranges from 0 to 59
             .optionalEnd()
             .appendPattern("a") // am / pm
             .parseDefaulting(ChronoField.MINUTE_OF_HOUR, 0) // if no minute is specified, use 0 by default
@@ -47,13 +47,12 @@ public class DateTimeParser {
 
         try {
             return LocalDateTime.parse(s, FMT_24H);
+        } catch (DateTimeParseException ignored) {
         }
-        catch (DateTimeParseException ignored) { }
 
         try {
             return LocalDateTime.parse(s, FMT_12H);
-        }
-        catch (DateTimeParseException e) {
+        } catch (DateTimeParseException e) {
             throw new IllegalArgumentException(
                     "Ooops ... invalid date/time. Some supported examples:\n" +
                             "  2026-1-16 20:00\n" +
