@@ -11,7 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-
+/**
+ * Represents a storage space, and bridges the code and the hard disk storage
+ */
 public class Storage {
    private Path filePath;
    private Formatter formatter;
@@ -22,7 +24,12 @@ public class Storage {
        this.formatter = formatter;
    }
 
-   // load files from the disk
+    /**
+     * Loads files from the disk.
+     *
+     * @return A list of {@code Tasks}
+     * @throws Exception if there are some corrupted lines in the file
+     */
    public List<Task> load() {
        try {
            // running the 1st time, the list is empty
@@ -61,6 +68,14 @@ public class Storage {
     //save all changes made by end-users
     //create the folder if needed
     // Overwrite the tasks
+
+    /**
+     * Saves all changes made by end-users (e.g. add tasks; mark/ unmark tasks, etc.)
+     * Creates the folder if needed.
+     * Overwrites the modified tasks.
+     *
+     * @param tasks A list of {@code Task}
+     */
     public void save(List<Task> tasks) {
         try {
             Path parent = filePath.getParent();
