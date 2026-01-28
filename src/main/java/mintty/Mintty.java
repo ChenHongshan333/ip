@@ -14,6 +14,15 @@ import mintty.ui.Ui;
 import java.nio.file.Paths;
 import java.util.*;
 
+
+/**
+ * Represents a chatbot names Mintty.
+ * Simple conversations are available using CLI.
+ *
+ * @author Hongshan
+ * @version 0.1
+ * @since 0.1
+ */
 public class Mintty {
 
     private final Storage storage;
@@ -40,6 +49,10 @@ public class Mintty {
     }
 
 
+    /**
+     * Starts the conversation.
+     * Actively listens to users' inputs to respond to that.
+     */
     public void run() {
         // start mintty.Mintty
         ui.printGreeting();
@@ -128,6 +141,9 @@ public class Mintty {
         }
     }
 
+    /**
+     * Main function.
+     */
     public static void main(String[] args) {
         Mintty mintty = new Mintty("data/mintty.txt");
         mintty.run();

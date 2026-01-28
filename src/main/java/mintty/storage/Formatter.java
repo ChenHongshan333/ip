@@ -7,6 +7,9 @@ import mintty.task.Todo;
 
 import java.time.LocalDateTime;
 
+/**
+ * Represents a converter that enables the mutual conversion between codes and strings
+ */
 public class Formatter {
 
     // type | taskStatus | description (des / des + by / des + from + to)
@@ -18,6 +21,15 @@ public class Formatter {
     }
 
     // convert string in files into code that can be recognized by mintty.Mintty
+
+    /**
+     * Parses a string line stored in hard disk into a {@code Task} consisting of
+     * a command, a status and a corresponding description.
+     *
+     * @param line
+     * @return A {@code Task}
+     * @throws IllegalArgumentException if the line is incomplete, or the type of the task is uncategorized
+     */
     public Task decode(String line) {
         String[] decoded = line.split(SEP_REGEX);
         if (decoded.length < 3) {
@@ -67,6 +79,14 @@ public class Formatter {
         return t;
     }
 
+    /**
+     * Parses a string representing status to boolean values,
+     * where true implies a successful recognition of user-input string, and vice versa.
+     *
+     * @param s
+     * @return A boolean value
+     * @throws IllegalArgumentException if {@code s} does not match any of the existing format
+     */
     public boolean parseStatus(String s) {
         if (s.equals("true") || s.equals("X") || s.equals("1")) {
             return true;

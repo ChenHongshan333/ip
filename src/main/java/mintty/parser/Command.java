@@ -4,6 +4,9 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Represents the enumeration of different commands.
+ */
 public enum Command {
     BYE("bye", "exit", "quit"),
     LIST("list"),

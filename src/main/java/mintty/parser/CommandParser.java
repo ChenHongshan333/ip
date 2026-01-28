@@ -3,10 +3,23 @@ package mintty.parser;
 import java.time.DateTimeException;
 import java.time.LocalDateTime;
 
+/**
+ * Parses user-input string to command and arguments.
+ * Further parsing on arguments are also supported.
+ */
 public class CommandParser {
 
-    // essentially, a mintty.parser based on where the first space is
-    // [command arg] -> [command] + [arg]
+    /**
+     * Parses a raw input line into a {@link ParsedCommand} consisting of a command word and an argument.
+     *
+     * <p>The command word is taken as the first token (before the first space). The remaining text
+     * after the first space is treated as the argument and is trimmed. If there is no space, the
+     * argument is an empty string.</p>
+     *
+     * @param line The raw input line to parse; must not be {@code null} or blank.
+     * @return A {@code ParsedCommand} containing the parsed {@code Command} and argument string.
+     * @throws IllegalArgumentException If {@code line} is {@code null} or blank.
+     */
     public ParsedCommand lineParser(String line) {
         // no command and arg
         if (line == null || line.trim().isEmpty()) {
@@ -28,6 +41,13 @@ public class CommandParser {
     }
 
 
+    /**
+     * Parses a raw input string into an integer.
+     *
+     * @param arg The raw input string to parse; must not be {@code null} or blank.
+     * @return An integer
+     * @throws IllegalArgumentException If {@code arg} is {@code null} or blank, or {@code arg} is negative or float.
+     */
     public int parseTaskNumber(String arg) {
         if (arg == null || arg.trim().isEmpty()) {
             throw new IllegalArgumentException("Noo.. Plz provide a mintty.task number!");
@@ -44,7 +64,17 @@ public class CommandParser {
 
     }
 
-    // [des + by] -> [des] + [by]
+    /**
+     * Parses a raw input line into a {@link ParsedDeadline} consisting of a task description and a "by" argument.
+     *
+     * <p>The task description is taken as the first token (before {@code /by}). The remaining text
+     * after {@code /by} is treated as the argument and is trimmed.
+     * If there is no {@code /by}, an IllegalArgumentException will be thrown.</p>
+     *
+     * @param arg The raw input line to parse; must not be {@code null} or blank.
+     * @return A {@code ParsedDeadline} containing the parsed description string and deadline string.
+     * @throws IllegalArgumentException If {@code arg} is {@code null} or blank, or the parsed description string or {@code /by} string is {@code null}.
+     */
     public ParsedDeadline deadlineParser(String arg) {
         if (arg == null || arg.trim().isEmpty()) {
             throw new IllegalArgumentException("Ooops... missing mintty.task description! TT");
@@ -78,7 +108,20 @@ public class CommandParser {
         }
     }
 
-    // [arg] -> [des] + [to] + [from]
+
+    /**
+     * Parses a raw input line into a {@link ParsedEvent},
+     * consisting of a task description, a {@code /from} and a {@code /to} argument.
+     *
+     * <p>The task description is taken as the first token (before {@code /from}).
+     * The starting time (between {@code /from} and {@code /to}) is taken as the second token.
+     * The remaining text after {@code /to} is treated as the ending time argument and is trimmed.
+     * If any of the above tokens is missing, an IllegalArgumentException will be thrown.</p>
+     *
+     * @param arg The raw input line to parse; must not be {@code null} or blank.
+     * @return A {@code ParsedEvent} containing the parsed description string, starting time and ending time string.
+     * @throws IllegalArgumentException If {@code arg} is {@code null} or blank, or any of the above tokens is missing.
+     */
     public ParsedEvent eventParser(String arg) {
         if (arg == null || arg.trim().isEmpty()) {
             throw new IllegalArgumentException("Ooops... missing mintty.task description! TT");
@@ -117,6 +160,12 @@ public class CommandParser {
     }
 
 
+    /**
+     * Represents a parsed user input consisting of a {@link Command} and its argument string.
+     *
+     * <p>This is an immutable value object produced by the parser. If the original input contains
+     * only a command word, the argument is typically an empty string ({@code ""}).</p>
+     */
     public final class ParsedCommand {
         private final Command command;
         private final String arg;
@@ -131,6 +180,9 @@ public class CommandParser {
     }
 
 
+    /**
+     * Represents a parsed deadline argument input consisting of a description string and its argument string.
+     */
     public class ParsedDeadline {
         private final String des;
         private final LocalDateTime by;
@@ -144,6 +196,9 @@ public class CommandParser {
         public LocalDateTime by() {return by;}
     }
 
+    /**
+     * Represents a parsed event argument input consisting of a description string and its argument string.
+     */
     public class ParsedEvent {
         private final String des;
         private final LocalDateTime from;

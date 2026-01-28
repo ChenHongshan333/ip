@@ -3,6 +3,9 @@ package mintty.task;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a list of {@code Task}.
+ */
 public class TaskList {
     private final List<Task> list = new ArrayList<>();
 
@@ -10,6 +13,12 @@ public class TaskList {
         list.addAll(l);
     }
 
+    /**
+     * Adda a {@code Task} to the taskList.
+     *
+     * @param t
+     * @throws IllegalArgumentException if the task description is {@code null}.
+     */
     public void add(Task t) {
         String des = t.getDescription();
         if (des == null || des.isEmpty()) {
@@ -33,6 +42,14 @@ public class TaskList {
         return list.get(taskNumber - 1);
     }
 
+    /**
+     * Sets the status of a {@code Task} specified by {@code taskNumber} to be done (i.e. true) or undone (i.e. false).
+     *
+     * @param taskNumber An integer that represents the order of the task in taskList
+     * @param done A boolean value that indicates whether this is a mark action (true) or unmark action (false)
+     * @return A {@code Task} that is marked or unmarked by user
+     * @throws IllegalArgumentException if user enters an invalid {@code taskNumber}
+     */
     public Task setTask(int taskNumber, boolean done) {
         Task t = getByNumber(taskNumber);
         if (done) {
@@ -43,6 +60,13 @@ public class TaskList {
         return t;
     }
 
+    /**
+     * Removes a {@code Task} specified by {@code taskNumber} from the taskList
+     *
+     * @param taskNumber An integer that represents the order of the task in taskList
+     * @return A {@code Task} that is removed by user
+     * @throws IllegalArgumentException if user enters an invalid {@code taskNumber}
+     */
     public Task remove(int taskNumber) {
         Task t = getByNumber(taskNumber);
         list.remove(taskNumber - 1);
