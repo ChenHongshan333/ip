@@ -13,6 +13,7 @@ public enum Command {
     MARK("mark", "m"),
     UNMARK("unmark", "u"),
     DELETE("delete","del"),
+    FIND("find", "f"),
     UNKNOWN();
 
     private final Set<String> aliases;

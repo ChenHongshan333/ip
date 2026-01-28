@@ -49,4 +49,15 @@ public class TaskList {
         return t;
     }
 
+    public List<Task> find(String keyword) {
+        String k = keyword.trim().toLowerCase();
+        List<Task> matchedTasks = new ArrayList<>();
+        for (Task task : list) {
+            if (task.getDescription().toLowerCase().contains(k)) {
+                matchedTasks.add(task);
+            }
+        }
+        return matchedTasks;
+    }
+
 }
