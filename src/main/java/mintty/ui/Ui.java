@@ -72,6 +72,12 @@ public class Ui {
 
     public void printFind(List<Task> foundList) {
         System.out.println(separator);
+        if (foundList.isEmpty()) {
+            System.out.println("Sorry I did not find any task that matches your keyword TT... \n"
+                    + "Is there a typo??");
+            System.out.println(separator);
+            return;
+        }
         int index = 1;
         System.out.println("Heyy! I've matched the following tasks in your list: ");
         for (Task t : foundList) {

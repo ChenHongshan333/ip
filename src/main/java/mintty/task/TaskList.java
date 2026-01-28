@@ -73,14 +73,27 @@ public class TaskList {
         return t;
     }
 
+    /**
+     * Finds a list of {@code Task} whose description contains {@code keyword}
+     *
+     * @param keyword A user-specified keyword
+     * @return A list of {@code Task} that contains {@code keyword}
+     * @throws IllegalArgumentException if {@code keyword} is null or blank after trimmed
+     */
     public List<Task> find(String keyword) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            throw new IllegalArgumentException("Heyy you have to tell me what you want to find QwQ!");
+        }
+
         String k = keyword.trim().toLowerCase();
         List<Task> matchedTasks = new ArrayList<>();
+
         for (Task task : list) {
             if (task.getDescription().toLowerCase().contains(k)) {
                 matchedTasks.add(task);
             }
         }
+
         return matchedTasks;
     }
 
