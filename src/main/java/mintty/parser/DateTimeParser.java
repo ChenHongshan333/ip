@@ -7,7 +7,7 @@ import java.util.Locale;
 
 /**
  * Converts user-input date and time to LocalDateTime format
- * Supported user-input formats：
+ * Supported user-input formats:
  * 2026-01-26 20:00
  * 2026-1-3 20:00
  * 2026-1-26 20
