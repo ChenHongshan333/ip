@@ -11,7 +11,7 @@ public class Ui {
 
     public void printGreeting() {
         System.out.println(separator);
-        System.out.println("Heyyy this is mintty.Mintty ~\nWhat can I do for you?");
+        System.out.println("Heyyy this is Mintty ~\nWhat can I do for you?");
         System.out.println(separator);
     }
 
@@ -23,7 +23,7 @@ public class Ui {
 
     public void printAddedMsg(Task task, int newSize) {
         System.out.println(separator);
-        System.out.println("Okie!! I've added this to the mintty.task list:\n"
+        System.out.println("Okie!! I've added this to the task list:\n"
                 + task.toString()
                 + "\nNow you have " + newSize + " tasks in total");
         System.out.println(separator);
@@ -33,7 +33,7 @@ public class Ui {
         int index = 1;
         System.out.println(separator);
         if (list.size() == 0) {
-            System.out.println("There is no mintty.task in your list QAQ");
+            System.out.println("There is no task in your list QAQ");
             System.out.println(separator);
             return;
         }
@@ -49,16 +49,16 @@ public class Ui {
     public void printMarkedTask(Task t) {
         System.out.println(separator);
         if (t.getStatus()) {
-            System.out.println("Niceee! I've marked this mintty.task as done: \n" + t.toString());
+            System.out.println("Niceee! I've marked this task as done: \n" + t.toString());
         } else {
-            System.out.println("Okie, I've marked this mintty.task as not done yet: \n" + t.toString());
+            System.out.println("Okie, I've marked this task as not done yet: \n" + t.toString());
         }
         System.out.println(separator);
     }
 
     public void printDelete(Task task, int newSize) {
         System.out.println(separator);
-        System.out.println("Okie!! I've removed this to from the mintty.task list:\n"
+        System.out.println("Okie!! I've removed this to from the task list:\n"
                 + task.toString()
                 + "\nNow you have " + newSize + " tasks in total.");
         System.out.println(separator);
