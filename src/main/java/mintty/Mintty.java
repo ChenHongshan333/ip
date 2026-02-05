@@ -1,18 +1,20 @@
 package mintty;
 
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.Scanner;
+
 import mintty.parser.Command;
 import mintty.parser.CommandParser;
-import mintty.storage.Storage;
 import mintty.storage.Formatter;
+import mintty.storage.Storage;
 import mintty.task.Deadline;
+import mintty.task.Event;
 import mintty.task.Task;
 import mintty.task.TaskList;
 import mintty.task.Todo;
-import mintty.task.Event;
 import mintty.ui.Ui;
 
-import java.nio.file.Paths;
-import java.util.*;
 
 
 /**
@@ -30,6 +32,10 @@ public class Mintty {
     private final Ui ui;
     private final CommandParser parser;
 
+    /**
+     * Constructor for Mintty
+     * @param filePath
+     */
     public Mintty(String filePath) {
         ui = new Ui();
         storage = new Storage(Paths.get(filePath), new Formatter());
