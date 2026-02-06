@@ -5,86 +5,78 @@ import mintty.task.TaskList;
 
 import java.util.List;
 import java.util.Scanner;
+import java.util.SimpleTimeZone;
 
 public class Ui {
-    protected static final String separator = "-".repeat(50);
+    // protected static final String separator = "-".repeat(50);
 
-    public void printGreeting() {
-        System.out.println(separator);
-        System.out.println("Heyyy this is Mintty ~\nWhat can I do for you?");
-        System.out.println(separator);
+    public String printGreeting() {
+        return "Heyyy this is Mintty ~\nWhat can I do for you?\n";
     }
 
-    public void printGoodbye() {
-        System.out.println(separator);
-        System.out.println("Nice to talk to you ^^\nSee you!");
-        System.out.println(separator);
+    public String printGoodbye() {
+        return "Nice to talk to you ^^\nSee you!\n";
     }
 
-    public void printAddedMsg(Task task, int newSize) {
-        System.out.println(separator);
-        System.out.println("Okie!! I've added this to the task list:\n"
+    public String printAddedMsg(Task task, int newSize) {
+        return "Okie!! I've added this to the task list:\n"
                 + task.toString()
-                + "\nNow you have " + newSize + " tasks in total");
-        System.out.println(separator);
+                + "\nNow you have " + newSize + " tasks in total ^^";
     }
 
-    public void printList(TaskList list) {
-        int index = 1;
-        System.out.println(separator);
+    public String printList(TaskList list) {
+        StringBuilder sb = new StringBuilder();
+
         if (list.size() == 0) {
-            System.out.println("There is no task in your list QAQ");
-            System.out.println(separator);
-            return;
+            sb.append("There is no task in your list QAQ\n");
+            return sb.toString();
         }
 
-        System.out.println("Here are the tasks in your list: ");
+        sb.append("Here are the tasks in your list: \n");
+        int index = 1;
         for (Task t : list.getList()) {
-            System.out.println(index + "." + t.toString());
+            sb.append(index).append(".").append(t.toString()).append("\n");
             index++;
         }
-        System.out.println(separator);
+
+        return sb.toString().trim();
     }
 
-    public void printMarkedTask(Task t) {
-        System.out.println(separator);
+
+    public String printMarkedTask(Task t) {
         if (t.getStatus()) {
-            System.out.println("Niceee! I've marked this task as done: \n" + t.toString());
+            return "Niceee! I've marked this task as done: \n" + t.toString();
         } else {
-            System.out.println("Okie, I've marked this task as not done yet: \n" + t.toString());
+            return "Okie, I've marked this task as not done yet: \n" + t.toString();
         }
-        System.out.println(separator);
     }
 
-    public void printDelete(Task task, int newSize) {
-        System.out.println(separator);
-        System.out.println("Okie!! I've removed this to from the task list:\n"
+    public String printDelete(Task task, int newSize) {
+
+        return "Okie!! I've removed this to from the task list:\n"
                 + task.toString()
-                + "\nNow you have " + newSize + " tasks in total.");
-        System.out.println(separator);
+                + "\nNow you have "
+                + newSize
+                + " tasks in total. \n";
     }
 
-    public void printException(String msg) {
-        System.out.println(separator);
-        System.out.println(msg);
-        System.out.println(separator);
+    public String printException(String msg) {
+        return msg;
     }
 
-    public void printFind(List<Task> foundList) {
-        System.out.println(separator);
+    public String printFind(List<Task> foundList) {
         if (foundList.isEmpty()) {
-            System.out.println("Sorry I did not find any task that matches your keyword TT... \n"
-                    + "Is there a typo??");
-            System.out.println(separator);
-            return;
+            return "Sorry I did not find any task that matches your keyword TT... \n"
+                    + "Is there a typo?? \n";
         }
         int index = 1;
-        System.out.println("Heyy! I've matched the following tasks in your list: ");
+        StringBuilder sb = new StringBuilder();
+        sb.append("Heyy! I've matched the following tasks in your list: \n");
         for (Task t : foundList) {
-            System.out.println(index + "." + t.toString());
+            sb.append(index).append(".").append(t.toString()).append("\n");
             index++;
         }
-        System.out.println(separator);
+        return sb.toString();
     }
 
     public String readUserInput(Scanner sc) {
