@@ -17,6 +17,11 @@ public class Event extends Task {
         this.to = to;
     }
 
+    public LocalDateTime getFrom() { return from; }
+    public LocalDateTime getTo() { return to; }
+    public void setFrom(LocalDateTime from) { this.from = from; }
+    public void setTo(LocalDateTime to) { this.to = to; }
+
 
     @Override
     public String toString() {

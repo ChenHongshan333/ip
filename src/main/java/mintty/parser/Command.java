@@ -17,6 +17,7 @@ public enum Command {
     UNMARK("unmark", "u"),
     DELETE("delete","del"),
     FIND("find", "f"),
+    SNOOZE("snooze", "s"),
     UNKNOWN();
 
     private final Set<String> aliases;

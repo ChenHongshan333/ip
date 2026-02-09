@@ -155,6 +155,19 @@ public class Mintty {
                 return ui.printAddedMsg(eventTask, list.size());
             }
 
+            case SNOOZE: {
+                // ddl: snooze 1 by XXXX
+                // event: snooze 2 from xxxx
+                // event: snooze 2 to xxxx
+                // event: snooze 2 from xxxx to xxxx
+                // todoTask: do not support "snooze"
+                var s = parser.snoozeParser(arg);
+                Task snoozed = list.snooze(s.index(), s.by(), s.from(), s.to());
+                storage.save(list.getList());
+                return "Snoozed: " + snoozed;
+
+            }
+
             default:
                 throw new IllegalArgumentException("Oops!! I don't know what you're saying TT. Is there a typo?");
             }

@@ -52,16 +52,16 @@ public class CommandParser {
      */
     public int parseTaskNumber(String arg) {
         if (arg == null || arg.trim().isEmpty()) {
-            throw new IllegalArgumentException("Noo.. Plz provide a mintty.task number!");
+            throw new IllegalArgumentException("Noo.. Plz provide a task number!");
         }
         try {
             int taskNumber = Integer.parseInt(arg.trim());
             if (taskNumber <= 0) {
-                throw new IllegalArgumentException("Noo... mintty.task number must be positive!");
+                throw new IllegalArgumentException("Noo... task number must be positive!");
             }
             return taskNumber;
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Noo... mintty.task number must be an integer!");
+            throw new IllegalArgumentException("Noo... task number must be an integer!");
         }
 
     }
@@ -79,7 +79,7 @@ public class CommandParser {
      */
     public ParsedDeadline deadlineParser(String arg) {
         if (arg == null || arg.trim().isEmpty()) {
-            throw new IllegalArgumentException("Ooops... missing mintty.task description! TT");
+            throw new IllegalArgumentException("Ooops... missing task description! TT");
         }
 
         String lower = arg.toLowerCase();
@@ -91,12 +91,12 @@ public class CommandParser {
 
         String des = arg.substring(0, byPos).trim();
         if (des.isEmpty()) {
-            throw new IllegalArgumentException("Ooops... missing mintty.task description! TT");
+            throw new IllegalArgumentException("Ooops... missing task description! TT");
         }
 
         String raw = arg.substring(byPos + 3).trim();
         if (raw.isEmpty()) {
-            throw new IllegalArgumentException("Ooops... missing mintty.task deadline! TT");
+            throw new IllegalArgumentException("Ooops... missing task deadline! TT");
         }
 
         try {
@@ -126,7 +126,7 @@ public class CommandParser {
      */
     public ParsedEvent eventParser(String arg) {
         if (arg == null || arg.trim().isEmpty()) {
-            throw new IllegalArgumentException("Ooops... missing mintty.task description! TT");
+            throw new IllegalArgumentException("Ooops... missing task description! TT");
         }
 
         String lower = arg.toLowerCase();
@@ -139,7 +139,7 @@ public class CommandParser {
 
         String des = arg.substring(0, fromPos).trim();
         if (des.isEmpty()) {
-            throw new IllegalArgumentException("Ooops... missing mintty.task description! TT");
+            throw new IllegalArgumentException("Ooops... missing task description! TT");
         }
 
         String dateF = arg.substring(fromPos + 5, toPos).trim();
@@ -154,12 +154,86 @@ public class CommandParser {
             LocalDateTime to = DateTimeParser.parse(dateT);
             return new ParsedEvent(des, from, to);
         } catch (DateTimeException e) {
-            throw new IllegalArgumentException("Invalid date (T^T) Make sure using the format:\n" +
-                    "2026.1.26 8pm\n" +
-                    "2026-1-26 20:00\n" +
-                    "2026/1/26 20");
+            throw new IllegalArgumentException("Invalid date (T^T) Make sure using the format:\n"
+                    + "2026.1.26 8pm\n"
+                    + "2026-1-26 20:00\n"
+                    + "2026/1/26 20");
         }
     }
+
+    /**
+     * Parse a row {@code arg} into a {@link ParsedSnooze}
+     * @param arg
+     * @return a {@link ParsedSnooze} that is consisting of (index, by, from, to)
+     */
+    public ParsedSnooze snoozeParser(String arg) {
+        if (arg == null || arg.trim().isEmpty()) {
+            throw new IllegalArgumentException("Ooops... missing snooze description! TT");
+        }
+
+        String[] parts = arg.trim().split("\\s+", 2);
+        if (parts.length < 2) {
+            throw new IllegalArgumentException("Usage: snooze <index> by/from/to ...");
+        }
+
+        int index = parseTaskNumber(parts[0]);
+        String tail = parts[1].trim();
+        String lower = tail.toLowerCase();
+
+        try {
+            if (lower.startsWith("by ")) {
+                LocalDateTime by = DateTimeParser.parse(tail.substring(3).trim());
+                return new ParsedSnooze(index, by, null, null);
+            }
+
+            if (lower.startsWith("to ")) {
+                LocalDateTime to = DateTimeParser.parse(tail.substring(3).trim());
+                return new ParsedSnooze(index, null, null, to);
+            }
+
+            if (lower.startsWith("from ")) {
+                String afterFrom = tail.substring(5).trim();
+                int toPos = indexOfToken(afterFrom, "to");
+
+                if (toPos >= 0) { // from ... to ...
+                    String fromStr = afterFrom.substring(0, toPos).trim();
+                    String toStr = afterFrom.substring(toPos + 2).trim();
+                    LocalDateTime from = DateTimeParser.parse(fromStr);
+                    LocalDateTime to = DateTimeParser.parse(toStr);
+                    return new ParsedSnooze(index, null, from, to);
+                }
+
+                // only from
+                LocalDateTime from = DateTimeParser.parse(afterFrom);
+                return new ParsedSnooze(index, null, from, null);
+            }
+
+        } catch (DateTimeException e) {
+            throw new IllegalArgumentException("Invalid date (T^T) Make sure using the format:\n"
+                    + "2026.1.26 8pm\n"
+                    + "2026-1-26 20:00\n"
+                    + "2026/1/26 20");
+        }
+
+        throw new IllegalArgumentException("Usage:\n"
+                + "snooze <index> by <datetime>\n"
+                + "snooze <index> from <datetime>\n"
+                + "snooze <index> to <datetime>\n"
+                + "snooze <index> from <datetime> to <datetime>");
+    }
+
+    private int indexOfToken(String s, String token) {
+        String[] tokens = s.split("\\s+");
+        int pos = 0;
+        for (String t : tokens) {
+            if (t.equalsIgnoreCase(token)) {
+                return pos;
+            }
+            pos += t.length() + 1;
+        }
+        return -1;
+    }
+
 
 
     /**
@@ -224,6 +298,36 @@ public class CommandParser {
 
         public String des() {
             return des;
+        }
+
+        public LocalDateTime from() {
+            return from;
+        }
+
+        public LocalDateTime to() {
+            return to;
+        }
+    }
+
+    public class ParsedSnooze {
+        private final int index;
+        private final LocalDateTime by;
+        private final LocalDateTime from;
+        private final LocalDateTime to;
+
+        public ParsedSnooze(int index, LocalDateTime by, LocalDateTime from, LocalDateTime to) {
+            this.index = index;
+            this.by = by;
+            this.from = from;
+            this.to = to;
+        }
+
+        public int index() {
+            return index;
+        }
+
+        public LocalDateTime by() {
+            return by;
         }
 
         public LocalDateTime from() {
