@@ -17,6 +17,10 @@ public class Deadline extends Task {
         this.by = by;
     }
 
+    public LocalDateTime getBy() { return by; }
+
+    public void setBy(LocalDateTime by) { this.by = by; }
+
 
     @Override
     public String toString() {
