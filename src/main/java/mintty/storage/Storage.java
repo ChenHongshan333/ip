@@ -9,6 +9,9 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 /**
@@ -31,37 +34,41 @@ public class Storage {
      * @throws Exception if there are some corrupted lines in the file
      */
     public List<Task> load() {
-        // load files from the disk
+        assert filePath != null : "filePath should have been initialized";
+        assert formatter != null : "formatter should have been initialized";
+
         try {
-            // running the 1st time, the list is empty
             if (Files.notExists(filePath)) {
                 return new ArrayList<>();
             }
 
-            List<String> lines = Files.readAllLines(filePath, StandardCharsets.UTF_8);
-            List<Task> tasks = new ArrayList<>();
-
-            for (String line : lines) {
-                String trimmed = line.trim();
-                if (trimmed.isEmpty()) {
-                    continue;
-                }
-
-                try {
-                    Task t = formatter.decode(trimmed);
-                    tasks.add(t);
-                } catch (Exception corruptedLine) {
-                    // stretch: corrupted line handling
-                    System.out.println(separator);
-                    System.out.println("! Warning: " + corruptedLine.getMessage());
-                    System.out.println(separator);
-                }
+            try (Stream<String> lines = Files.lines(filePath, StandardCharsets.UTF_8)) {
+                return lines
+                        .map(String::trim)
+                        .filter(s -> !s.isEmpty())
+                        .map(this::decodeOrWarn)          // Optional<Task>
+                        .flatMap(Optional::stream)        // Optional -> Task stream
+                        .collect(Collectors.toList());
             }
-            return tasks;
+
         } catch (IOException e) {
-            // if it failed to read files
-            // return an empty arrayList
             return new ArrayList<>();
+        }
+    }
+
+    private Optional<Task> decodeOrWarn(String trimmedLine) {
+        assert trimmedLine != null : "trimmedLine should not be null";
+        assert !trimmedLine.isBlank() : "decodeOrWarn expects non-blank line";
+
+        try {
+            Task t = formatter.decode(trimmedLine);
+            assert t != null : "formatter.decode() returned null for line: " + trimmedLine;
+            return Optional.of(t);
+        } catch (Exception corruptedLine) {
+            System.out.println(separator);
+            System.out.println("! Warning: " + corruptedLine.getMessage());
+            System.out.println(separator);
+            return Optional.empty();
         }
     }
 
