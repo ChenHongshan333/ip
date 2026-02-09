@@ -7,39 +7,41 @@ import java.util.List;
  * Represents a list of {@code Task}.
  */
 public class TaskList {
-    private final List<Task> list = new ArrayList<>();
+    private final List<Task> tasks = new ArrayList<>();
 
     public void load(List<Task> l) {
-        list.addAll(l);
+        tasks.addAll(l);
     }
 
     /**
      * Adda a {@code Task} to the taskList.
      *
-     * @param t
+     * @param task
      * @throws IllegalArgumentException if the task description is {@code null}.
      */
-    public void add(Task t) {
-        String des = t.getDescription();
+    public void add(Task task) {
+        String des = task.getDescription();
         if (des == null || des.isEmpty()) {
             throw new IllegalArgumentException("Ooops... missing mintty.task description! TT");
         }
-        list.add(t);
+        tasks.add(task);
     }
 
     public int size() {
-        return list.size();
+        return tasks.size();
     }
 
     public List<Task> getList() {
-        return this.list;
+        return this.tasks;
     }
 
     private Task getByNumber(int taskNumber) {
-        if (taskNumber <= 0 || taskNumber > list.size()) {
-            throw new IllegalArgumentException("Oops... It is illegal to enter: " + taskNumber + " ... plz enter a valid mintty.task number again!");
+        if (taskNumber <= 0 || taskNumber > tasks.size()) {
+            throw new IllegalArgumentException("Oops... It is illegal to enter: "
+                    + taskNumber
+                    + " ... plz enter a valid mintty.task number again!");
         }
-        return list.get(taskNumber - 1);
+        return tasks.get(taskNumber - 1);
     }
 
     /**
@@ -69,7 +71,7 @@ public class TaskList {
      */
     public Task remove(int taskNumber) {
         Task t = getByNumber(taskNumber);
-        list.remove(taskNumber - 1);
+        tasks.remove(taskNumber - 1);
         return t;
     }
 
@@ -91,7 +93,7 @@ public class TaskList {
 
         List<Task> matchedTasks = new ArrayList<>();
 
-        for (Task task : list) {
+        for (Task task : tasks) {
             if (task.getDescription().toLowerCase().contains(k)) {
                 matchedTasks.add(task);
             }
