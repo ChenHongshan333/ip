@@ -32,6 +32,9 @@ public class Formatter {
      */
     public Task decode(String line) {
         String[] decoded = line.split(SEP_REGEX);
+        
+        assert decoded != null : "decoded information cannot be null!";
+
         if (decoded.length < 3) {
             throw new IllegalArgumentException("Missing components in the file TT: " + line);
         }

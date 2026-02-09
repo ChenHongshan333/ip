@@ -13,7 +13,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-
 /**
  * Represents a storage space, and bridges the code and the hard disk storage
  */
@@ -23,6 +22,10 @@ public class Storage {
     private String separator = "-".repeat(50);
 
     public Storage(Path filePath, Formatter formatter) {
+
+        assert filePath != null : "filePath should have been initialized";
+        assert formatter != null : "formatter should have been initialized";
+
         this.filePath = filePath;
         this.formatter = formatter;
     }
@@ -80,6 +83,11 @@ public class Storage {
      * @param tasks A list of {@code Task}
      */
     public void save(List<Task> tasks) {
+
+        assert tasks != null : "save() expects a non-null task list";
+        assert filePath != null : "filePath should have been initialized";
+        assert formatter != null : "formatter should have been initialized";
+
         try {
             Path parent = filePath.getParent();
             if (parent != null) {
@@ -88,7 +96,15 @@ public class Storage {
 
             List<String> lines = new ArrayList<>();
             for (Task t : tasks) {
-                lines.add(formatter.encode(t));
+                assert t != null : "tasks list must not contain null";
+
+                String encoded = formatter.encode(t);
+
+                assert encoded != null : "formatter.encode() returned null for task: " + t;
+                assert !encoded.contains("\n") && !encoded.contains("\r")
+                        : "Encoded task must be single-line, but got: " + encoded;
+
+                lines.add(encoded);
             }
 
             Files.write(filePath, lines, StandardCharsets.UTF_8,
