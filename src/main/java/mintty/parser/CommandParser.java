@@ -32,8 +32,10 @@ public class CommandParser {
             return new ParsedCommand(Command.from(line), "");
         }
 
-
         String command = line.substring(0, firstSpace).toLowerCase();
+
+        assert command != null : "The cases when command is null should be addressed; but now command is：" + command;
+
         Command cmd = Command.from(command);
         String arg = line.substring(firstSpace + 1).trim();
 

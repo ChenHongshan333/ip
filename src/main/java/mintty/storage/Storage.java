@@ -20,6 +20,10 @@ public class Storage {
     private String separator = "-".repeat(50);
 
     public Storage(Path filePath, Formatter formatter) {
+
+        assert filePath != null : "filePath should have been initialized";
+        assert formatter != null : "formatter should have been initialized";
+
         this.filePath = filePath;
         this.formatter = formatter;
     }
@@ -31,6 +35,9 @@ public class Storage {
      * @throws Exception if there are some corrupted lines in the file
      */
     public List<Task> load() {
+        assert filePath != null : "filePath should have been initialized";
+        assert formatter != null : "formatter should have been initialized";
+
         // load files from the disk
         try {
             // running the 1st time, the list is empty
@@ -42,6 +49,7 @@ public class Storage {
             List<Task> tasks = new ArrayList<>();
 
             for (String line : lines) {
+                assert line != null : "Input file contains a null line (unexpected)";
                 String trimmed = line.trim();
                 if (trimmed.isEmpty()) {
                     continue;
@@ -49,6 +57,7 @@ public class Storage {
 
                 try {
                     Task t = formatter.decode(trimmed);
+                    assert t != null : "formatter.decode() returned null for line: " + trimmed;
                     tasks.add(t);
                 } catch (Exception corruptedLine) {
                     // stretch: corrupted line handling
@@ -73,6 +82,11 @@ public class Storage {
      * @param tasks A list of {@code Task}
      */
     public void save(List<Task> tasks) {
+
+        assert tasks != null : "save() expects a non-null task list";
+        assert filePath != null : "filePath should have been initialized";
+        assert formatter != null : "formatter should have been initialized";
+
         try {
             Path parent = filePath.getParent();
             if (parent != null) {
@@ -81,7 +95,15 @@ public class Storage {
 
             List<String> lines = new ArrayList<>();
             for (Task t : tasks) {
-                lines.add(formatter.encode(t));
+                assert t != null : "tasks list must not contain null";
+
+                String encoded = formatter.encode(t);
+
+                assert encoded != null : "formatter.encode() returned null for task: " + t;
+                assert !encoded.contains("\n") && !encoded.contains("\r")
+                        : "Encoded task must be single-line, but got: " + encoded;
+
+                lines.add(encoded);
             }
 
             Files.write(filePath, lines, StandardCharsets.UTF_8,
