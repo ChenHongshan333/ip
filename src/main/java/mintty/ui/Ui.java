@@ -43,11 +43,11 @@ public class Ui {
     }
 
 
-    public String printMarkedTask(Task t) {
-        if (t.getStatus()) {
-            return "Niceee! I've marked this task as done: \n" + t.toString();
+    public String printMarkedTask(Task task) {
+        if (task.getStatus()) {
+            return "Niceee! I've marked this task as done: \n" + task.toString();
         } else {
-            return "Okie, I've marked this task as not done yet: \n" + t.toString();
+            return "Okie, I've marked this task as not done yet: \n" + task.toString();
         }
     }
 

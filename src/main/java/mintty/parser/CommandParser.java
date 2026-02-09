@@ -53,11 +53,11 @@ public class CommandParser {
             throw new IllegalArgumentException("Noo.. Plz provide a mintty.task number!");
         }
         try {
-            int n = Integer.parseInt(arg.trim());
-            if (n <= 0) {
+            int taskNumber = Integer.parseInt(arg.trim());
+            if (taskNumber <= 0) {
                 throw new IllegalArgumentException("Noo... mintty.task number must be positive!");
             }
-            return n;
+            return taskNumber;
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("Noo... mintty.task number must be an integer!");
         }
