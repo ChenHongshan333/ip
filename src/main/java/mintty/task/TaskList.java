@@ -88,6 +88,9 @@ public class TaskList {
         }
 
         String k = keyword.trim().toLowerCase();
+
+        assert k != null : "The cases when k is null should be addressed before; but now k is " + k;
+
         List<Task> matchedTasks = new ArrayList<>();
 
         for (Task task : tasks) {
