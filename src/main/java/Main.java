@@ -26,6 +26,7 @@ public class Main extends Application {
             Scene scene = new Scene(ap);
             stage.setScene(scene);
             fxmlLoader.<MainWindow>getController().setMintty(mintty); // inject the Mintty instance
+            stage.setTitle("Mintty QwQ");
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
