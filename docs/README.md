@@ -1,12 +1,12 @@
 # Mintty User Guide
-***
+
 Made by [Hongshan](https://github.com/ChenHongshan333),
 for CS2103T AY26/27 sem2 iP (individual project).
 
 <br>
 
 ## Brief Introduction
-***
+
 > 60 apples a day keep unemployment away. - asgyph777wyxcc999 [(source)](https://www.reddit.com/user/asgyph777wyxcc999/)
 
 The above quote is from the comments to a Reddit topic [Applied to 60 apple jobs today alone lol](https://www.reddit.com/r/csMajors/comments/19btarz/applied_to_60_apple_jobs_today_alone_lol/)
@@ -55,7 +55,7 @@ public static void main(String[] args) {
 
 
 ## Feature List
-***
+
 
 ### 1. Todo
 
