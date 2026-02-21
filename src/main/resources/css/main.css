@@ -1,15 +1,15 @@
 .root {
-    main-color: fefae0; /* Create a looked-up color called "main-color" within root. */
+    main-color: #fefae0; /* Create a looked-up color called "main-color" within root. */
     -fx-background-color: main-color;
 }
 
 .text-field {
-    -fx-background-color: ccd5ae;
+    -fx-background-color: #ccd5ae;
     -fx-font: 20px "Goudy Old Style";
 }
 
 .button {
-    -fx-background-color: d4a373;
+    -fx-background-color: #d4a373;
     -fx-font: italic bold 20px "Goudy Old Style";
 }
 
@@ -34,7 +34,7 @@
 }
 
 .scroll-bar .thumb {
-    -fx-background-color: ccd5ae;
+    -fx-background-color: #ccd5ae;
     -fx-background-radius: 1em;
 }
 

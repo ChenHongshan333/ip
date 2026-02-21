@@ -1,6 +1,6 @@
 .label {
-    -fx-background-color: e9edc9;
-    -fx-border-color: d4a373;
+    -fx-background-color: #e9edc9;
+    -fx-border-color: #d4a373;
     -fx-border-width: 2px;
     -fx-background-radius: 1em 1em 0 1em;
     -fx-border-radius: 1em 1em 0 1em;
@@ -23,4 +23,3 @@
     -fx-rotate: 0;
 
 }
-
