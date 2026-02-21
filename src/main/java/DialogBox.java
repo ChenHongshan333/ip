@@ -23,17 +23,6 @@ public class DialogBox extends HBox {
     @FXML
     private ImageView displayPicture;
 
-    // change the picture file to be a circle
-    public void initialize() {
-        double radius = 50;
-
-        Circle clip = new Circle(radius, radius, radius);
-        displayPicture.setClip(clip);
-
-        displayPicture.setFitWidth(radius * 2);
-        displayPicture.setFitHeight(radius * 2);
-    }
-
     private DialogBox(String text, Image img) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(MainWindow.class.getResource("/view/DialogBox.fxml"));
@@ -47,6 +36,17 @@ public class DialogBox extends HBox {
         dialog.setText(text);
         displayPicture.setImage(img);
     }
+
+    // change the picture file to be a circle
+//    public void initialize() {
+//        double radius = 50;
+//
+//        Circle clip = new Circle(radius, radius, radius);
+//        displayPicture.setClip(clip);
+//
+//        displayPicture.setFitWidth(radius * 2);
+//        displayPicture.setFitHeight(radius * 2);
+//    }
 
     /**
      * Flips the dialog box such that the ImageView is on the left and text on the right.

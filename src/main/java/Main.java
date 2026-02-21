@@ -25,7 +25,7 @@ public class Main extends Application {
             AnchorPane ap = fxmlLoader.load();
             Scene scene = new Scene(ap);
             stage.setScene(scene);
-            fxmlLoader.<MainWindow>getController().setMintty(mintty);  // inject the Mintty instance
+            fxmlLoader.<MainWindow>getController().setMintty(mintty); // inject the Mintty instance
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

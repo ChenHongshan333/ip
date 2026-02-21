@@ -1,4 +1,3 @@
-import java.nio.charset.MalformedInputException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -31,9 +30,9 @@ public class MainWindow extends AnchorPane {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
     }
 
-    /** Injects the Mintty instance */
-    public void setMintty(Mintty m) {
-        mintty = m;
+    /** Injects the Duke instance */
+    public void setMintty(Mintty mintty) {
+        this.mintty = mintty;
     }
 
     /**
@@ -49,9 +48,5 @@ public class MainWindow extends AnchorPane {
                 DialogBox.getDukeDialog(response, minttyImage)
         );
         userInput.clear();
-
-        if (mintty.isShouldExit()) {
-            javafx.application.Platform.exit();
-        }
     }
 }
