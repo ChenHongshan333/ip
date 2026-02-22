@@ -4,7 +4,7 @@ Mintty is a desktop app for managing tasks,
 optimized for use via a Command Line Interface (CLI) while still having the benefits of a Graphical User Interface (GUI). 
 If you can type fast, Mintty can get your task management done faster than traditional GUI apps. 
 Whether you are tracking assignments or scheduling personal events, Mintty helps you stay on top of your schedule.
----
+
 
 ## Table of Contents
 
@@ -23,7 +23,7 @@ Whether you are tracking assignments or scheduling personal events, Mintty helps
 * [Command Summary](#command-summary)
 * [Contributing](#contributing)
 
----
+
 
 ## Quick Start
 
@@ -31,13 +31,13 @@ Whether you are tracking assignments or scheduling personal events, Mintty helps
 2. Download the latest `mintty.jar` from [here](https://github.com/ChenHongshan333/ip).
 3. Copy the file to the folder you want to use as the home folder for your Mintty.
 4. Double-click the file to start the app. The GUI similar to the screenshot below should appear in a few seconds.
+5. Type the command in the command box and press Enter to execute it. e.g. typing `list` and pressing Enter will display all your current tasks.
 
 ![Ui.png](Ui.png)
 > A screenshot of Mintty's UI
 
-5. Type the command in the command box and press Enter to execute it. e.g. typing `list` and pressing Enter will display all your current tasks.
 
----
+
 
 ## Features
 
@@ -193,7 +193,7 @@ Nice to talk to you^^
 See you!
 ```
 
----
+
 
 ## Command Summary
 
@@ -210,7 +210,7 @@ See you!
 | **Snooze** | `snooze INDEX by NEW_DATETIME` (Deadline) <br> `snooze INDEX from NEW_START_DATETIME to NEW_END_DATETIME` (Event) <br> e.g., `snooze 2 to 2026-Mar-3 6pm` |
 | **Bye** | `bye` |
 
----
+
 
 ## Contributing
 [Hongshan](https://github.com/ChenHongshan333), 
