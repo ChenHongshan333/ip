@@ -51,9 +51,13 @@ Whether you are tracking assignments or scheduling personal events, Mintty helps
 
 Adds a basic task without any date or time constraints to the list.
 
-**Format:** `todo DESCRIPTION`
+**Format:** 
+- `todo DESCRIPTION`
+- `td DESCRIPTION`
 
-**Example:** `todo Take shower`
+**Example:** 
+- `todo Take shower`
+- `td Take shower`
 
 **Expected outcome:**
 ```text
@@ -66,9 +70,13 @@ Now you have 2 tasks in total.
 
 Adds a task that needs to be done before a specific date/time.
 
-**Format:** `deadline DESCRIPTION /by DATETIME`
+**Format:** 
+- `deadline DESCRIPTION /by DATETIME`
+- `ddl DESCRIPTION /by DATETIME`
 
-**Example:** `deadline CS2109S midterm /by: 2026-Mar-2 6pm`
+**Example:** 
+- `deadline CS2109S midterm /by 2026.3.2 6pm`
+- `ddl CS2109S midterm /by 2026.3.2 6pm`
 
 **Expected outcome:**
 ```text
@@ -81,9 +89,13 @@ Now you have 3 tasks in total.
 
 Adds a task that starts at a specific time and ends at a specific time.
 
-**Format:** `event DESCRIPTION /from START_DATETIME /to END_DATETIME`
+**Format:** 
+ - `event DESCRIPTION /from START_DATETIME /to END_DATETIME`
+ - `e DESCRIPTION /from START_DATETIME /to END_DATETIME`
 
-**Example:** `event prepare for FFC /from 2025.12.3 9pm /to 2026.8.5 11pm`
+**Example:** 
+- `event prepare for FFC /from 2025.12.3 9pm /to 2026.8.5 11pm`
+- `e prepare for FFC /from 2025.12.3 9pm /to 2026.8.5 11pm`
 
 **Expected outcome:**
 ```text
@@ -96,7 +108,7 @@ Now you have 4 tasks in total.
 
 Shows a list of all tasks currently stored in Mintty.
 
-**Format:** `list`
+**Format:** `list` or `l`
 
 **Expected outcome:**
 ```text
@@ -109,11 +121,13 @@ Here are the tasks in your list:
 
 Marks the specified task from the list as completed.
 
-**Format:** `mark INDEX`
+**Format:** `mark INDEX` or `m INDEX`
 > * `INDEX` refers to the index number shown in the displayed task list.
 > * The index **must be a positive integer** (e.g., 1, 2, 3...).
 
-**Example:** `mark 2`
+**Example:** 
+- `mark 2`
+- `m 2`
 
 **Expected outcome:**
 ```text
@@ -125,9 +139,9 @@ Niceee! I've marked this task as done:
 
 Reverts a completed task back to an uncompleted state.
 
-**Format:** `unmark INDEX`
+**Format:** `unmark INDEX` or `u INDEX`
 
-**Example:** `unmark 2`
+**Example:** `unmark 2` or `u 2`
 
 **Expected outcome:**
 ```text
@@ -139,9 +153,13 @@ Okie, I've marked this task as not done yet:
 
 Finds tasks whose description matches the given keyword(s).
 
-**Format:** `find KEYWORD`
+**Format:** 
+- `find KEYWORD`
+- `f KEYWORD`
 
-**Example:** `find CS2109S`
+**Example:**
+- `find CS2109S`
+- `f CS2109S`
 
 **Expected outcome:**
 ```text
@@ -153,9 +171,13 @@ Heyyy! I've matched the following tasks in your list:
 
 Deletes the specified task from the list.
 
-**Format:** `delete INDEX`
+**Format:** 
+ - `delete INDEX`
+ - `del INDEX`
 
-**Example:** `delete 2`
+**Example:** 
+ - `delete 2`
+ - `del 2`
 
 **Expected outcome:**
 ```text
@@ -167,7 +189,7 @@ Now you have 1 tasks in total.
 ### 9. Snooze
 
 Postpones or reschedules a Deadline or Event task to a new date/time.
-> 💡 **Note:** This feature does not support `Todo` tasks, as they do not have time constraints.
+> **Note:** This feature does not support `Todo` tasks, as they do not have time constraints.
 
 **Format:** 
 * For a Deadline: `snooze INDEX by NEW_DATETIME`
@@ -176,7 +198,7 @@ Postpones or reschedules a Deadline or Event task to a new date/time.
   * `snooze INDEX to NEW_END_DATETIME`
   * `snooze INDEX from NEW_START_DATETIME`
 
-**Example:** `snooze 2 to 2026-Mar-3 6pm`
+**Example:** `snooze 2 to 2026.3.3 6pm`
 
 **Expected outcome:**
 ```text
@@ -200,19 +222,18 @@ See you!
 
 ## Command Summary
 
-| Action | Format, Examples |
-| :--- | :--- |
-| **Todo** | `todo DESCRIPTION` <br> e.g., `todo Take shower` |
-| **Deadline** | `deadline DESCRIPTION /by DATETIME` <br> e.g., `deadline CS2109S midterm /by: 2026-Mar-2 6pm` |
-| **Event** | `event DESCRIPTION /from START_DATETIME /to END_DATETIME` <br> e.g., `event prepare for FFC /from 2025.12.3 9pm /to 2026.8.5 11pm` |
-| **List** | `list` |
-| **Mark** | `mark INDEX` <br> e.g., `mark 2` |
-| **Unmark** | `unmark INDEX` <br> e.g., `unmark 2` |
-| **Find** | `find KEYWORD` <br> e.g., `find CS2109S` |
-| **Delete** | `delete INDEX` <br> e.g., `delete 2` |
-| **Snooze** | `snooze INDEX by NEW_DATETIME` (Deadline) <br> `snooze INDEX from NEW_START_DATETIME to NEW_END_DATETIME` (Event) <br> e.g., `snooze 2 to 2026-Mar-3 6pm` |
-| **Bye** | `bye` |
-
+| Action | Format                                                                                                               | Example |
+| :--- |:---------------------------------------------------------------------------------------------------------------------| :--- |
+| **Todo** | `todo DESCRIPTION` <br> `td DESCRPTION`                                                                              | `todo Take shower` |
+| **Deadline** | `deadline DESCRIPTION /by DATETIME`  <br> `ddl DESCRIPTION /by DATETIME`                                             | `deadline CS2109S midterm /by: 2026.3.2 6pm` |
+| **Event** | `event DESCRIPTION /from START_DATETIME /to END_DATETIME` <br> `e DESCRIPTION /from START_DATETIME /to END_DATETIME` | `event prepare for FFC /from 2025.12.3 9pm /to 2026.8.5 11pm` |
+| **List** | `list`  <br> `l`                                                                                                     | |
+| **Mark** | `mark INDEX`  <br> `m INDEX`                                                                                         | `mark 2` |
+| **Unmark** | `unmark INDEX`   <br> `u INDEX`                                                                                      | `unmark 2` |
+| **Find** | `find KEYWORD` <br> `f KEYWORD`                                                                                      | `find CS2109S` |
+| **Delete** | `delete INDEX` <br> `del INDEX`                                                                                      | `delete 2` |
+| **Snooze** | Deadline: `snooze INDEX by NEW_DATETIME`  <br> Event: `snooze INDEX from NEW_START_DATETIME to NEW_END_DATETIME`     | `snooze 2 to 2026-Mar-3 6pm` |
+| **Bye** | `bye` <br> `exit` <br> `quit`                                                                                        | |
 
 <br>
 

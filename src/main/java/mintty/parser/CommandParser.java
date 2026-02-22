@@ -48,6 +48,7 @@ public class CommandParser {
             return new ExitCommand();
 
         case "list":
+        case "l":
             return new ListCommand();
 
         case "todo":
