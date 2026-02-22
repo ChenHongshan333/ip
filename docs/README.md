@@ -5,6 +5,7 @@ optimized for use via a Command Line Interface (CLI) while still having the bene
 If you can type fast, Mintty can get your task management done faster than traditional GUI apps. 
 Whether you are tracking assignments or scheduling personal events, Mintty helps you stay on top of your schedule.
 
+<br>
 
 ## Table of Contents
 
@@ -24,6 +25,7 @@ Whether you are tracking assignments or scheduling personal events, Mintty helps
 * [Contributing](#contributing)
 
 
+<br>
 
 ## Quick Start
 
@@ -37,7 +39,7 @@ Whether you are tracking assignments or scheduling personal events, Mintty helps
 > A screenshot of Mintty's UI
 
 
-
+<br>
 
 ## Features
 
@@ -193,6 +195,7 @@ Nice to talk to you^^
 See you!
 ```
 
+<br>
 
 
 ## Command Summary
@@ -211,6 +214,7 @@ See you!
 | **Bye** | `bye` |
 
 
+<br>
 
 ## Contributing
 [Hongshan](https://github.com/ChenHongshan333), 
