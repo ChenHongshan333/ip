@@ -2,6 +2,7 @@ package mintty.parser;
 
 import java.time.DateTimeException;
 import java.time.LocalDateTime;
+import mintty.command.Command;
 
 /**
  * Parses user-input string to command and arguments.

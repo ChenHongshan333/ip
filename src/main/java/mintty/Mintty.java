@@ -1,18 +1,13 @@
 package mintty;
 
 import java.nio.file.Paths;
-import java.util.List;
 import java.util.Scanner;
 
-import mintty.parser.Command;
+import mintty.command.Command;
 import mintty.parser.CommandParser;
 import mintty.storage.Formatter;
 import mintty.storage.Storage;
-import mintty.task.Deadline;
-import mintty.task.Event;
-import mintty.task.Task;
 import mintty.task.TaskList;
-import mintty.task.Todo;
 import mintty.ui.Ui;
 
 /**
@@ -109,107 +104,4 @@ public class Mintty {
         sc.close();
     }
 }
-
-
-
-
-
-//    public String getResponse(String userInput) {
-//        shouldExit = false;
-//
-//        try {
-//            if (userInput == null) {
-//                shouldExit = true;
-//                return ui.printGoodbye();
-//            }
-//
-//            // Parse the input (command + arg)
-//            var parsed = parser.lineParser(userInput);
-//            Command command = parsed.command();
-//            String arg = parsed.arg(); // may contain by / from / to
-//
-//            // based on different prompt, do different things
-//            switch (command) {
-//            case BYE:
-//                shouldExit = true;
-//                return ui.printGoodbye();
-//
-//            case LIST:
-//                return ui.printList(list);
-//
-//            case MARK: {
-//                int n = parser.parseTaskNumber(arg);
-//                Task markedTask = list.setTask(n, true);
-//                storage.save(list.getList());
-//                return ui.printMarkedTask(markedTask);
-//            }
-//
-//            case UNMARK: {
-//                int m = parser.parseTaskNumber(arg);
-//                Task unmarkedTask = list.setTask(m, false);
-//                storage.save(list.getList());
-//                return ui.printMarkedTask(unmarkedTask);
-//            }
-//
-//
-//            case FIND: {
-//                List<Task> foundList = list.find(arg);
-//                return ui.printFind(foundList);
-//            }
-//
-//
-//            case DELETE: {
-//                int r = parser.parseTaskNumber(arg);
-//                Task removed = list.remove(r);
-//                storage.save(list.getList());
-//                return ui.printDelete(removed, list.size());
-//            }
-//
-//
-//            case TODO: {
-//                Task todoTask = new Todo(arg);
-//                list.add(todoTask);
-//                storage.save(list.getList());
-//                return ui.printAddedMsg(todoTask, list.size());
-//            }
-//
-//
-//            case DEADLINE: {
-//                var dParts = parser.deadlineParser(arg);
-//                Task ddlTask = new Deadline(dParts.des(), dParts.by());
-//                list.add(ddlTask);
-//                storage.save(list.getList());
-//                return ui.printAddedMsg(ddlTask, list.size());
-//            }
-//
-//
-//            case EVENT: {
-//                var eParts = parser.eventParser(arg);
-//                Task eventTask = new Event(eParts.des(), eParts.from(), eParts.to());
-//                list.add(eventTask);
-//                storage.save(list.getList());
-//                return ui.printAddedMsg(eventTask, list.size());
-//            }
-//
-//            case SNOOZE: {
-//                // ddl: snooze 1 by XXXX
-//                // event: snooze 2 from xxxx
-//                // event: snooze 2 to xxxx
-//                // event: snooze 2 from xxxx to xxxx
-//                // todoTask: do not support "snooze"
-//                var s = parser.snoozeParser(arg);
-//                Task snoozed = list.snooze(s.index(), s.by(), s.from(), s.to());
-//                storage.save(list.getList());
-//                return "Snoozed: " + snoozed;
-//
-//            }
-//
-//            default:
-//                throw new IllegalArgumentException("Oops!! I don't know what you're saying TT. Is there a typo?");
-//            }
-//
-//        } catch (IllegalArgumentException e) {
-//            return ui.printException(e.getMessage());
-//        }
-//    }
 
