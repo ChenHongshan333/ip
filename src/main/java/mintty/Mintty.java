@@ -11,97 +11,100 @@ import mintty.task.TaskList;
 import mintty.ui.Ui;
 
 /**
- * Represents a chatbot names Mintty.
- * Simple conversations are available using CLI.
+ * Represents the Mintty chatbot application.
+ *
+ * <p>Mintty is a CLI-based task management chatbot that supports
+ * adding, deleting, marking, finding, and modifying tasks.</p>
+ *
+ * <p>This class acts as the application entry point and orchestrator.
+ * It is responsible for:</p>
+ * <ul>
+ *     <li>Initializing core components (UI, Storage, Parser, TaskList)</li>
+ *     <li>Reading user input</li>
+ *     <li>Delegating command parsing</li>
+ *     <li>Executing commands</li>
+ *     <li>Managing application lifecycle</li>
+ * </ul>
+ *
+ * <p>No business logic is implemented here. All business logic is
+ * encapsulated inside concrete {@link Command} implementations.</p>
  *
  * @author Hongshan
- * @version 0.1
+ * @version 2.0
  * @since 0.1
  */
 public class Mintty {
 
-    private final Storage storage;
-    private final TaskList list;
+    /** Handles user interaction formatting and input/output. */
     private final Ui ui;
+
+    /** Handles persistent storage of tasks. */
+    private final Storage storage;
+
+    /** Maintains the in-memory list of tasks. */
+    private final TaskList taskList;
+
+    /** Responsible for parsing user input into Command objects. */
     private final CommandParser parser;
-    private boolean shouldExit = false;
+
+    /** Indicates whether the application should terminate. */
+    private boolean shouldExit;
 
     /**
-     * Constructor for Mintty
+     * Constructs a Mintty application instance.
      *
-     * @param filePath
+     * <p>Initializes all core components and loads previously
+     * saved tasks from storage if available.</p>
+     *
+     * @param filePath Path to the persistent storage file.
      */
     public Mintty(String filePath) {
-        ui = new Ui();
-        storage = new Storage(Paths.get(filePath), new Formatter());
-        parser = new CommandParser();
-
-        TaskList loaded;
-
-        try {
-            loaded = new TaskList();
-            // when initialized, reload the content of mintty.txt (the result of last run) to the current taskList
-            loaded.load(storage.load());
-        } catch (IllegalArgumentException e) {
-            ui.printException(e.getMessage());
-            loaded = new TaskList();
-        }
-        list = loaded;
+        this.ui = new Ui();
+        this.storage = new Storage(Paths.get(filePath), new Formatter());
+        this.parser = new CommandParser();
+        this.taskList = loadTasks();
+        this.shouldExit = false;
     }
 
     /**
-     * Initialize the taskList.
+     * Loads tasks from storage into a TaskList.
      *
-     * @return a {@code TaskList}
+     * <p>If loading fails due to invalid stored data,
+     * an empty TaskList will be created instead.</p>
+     *
+     * @return Initialized TaskList.
      */
-    private TaskList initializeTaskList() {
+    private TaskList loadTasks() {
+        TaskList list = new TaskList();
         try {
-            TaskList loaded = new TaskList();
-            loaded.load(storage.load());
-            return loaded;
+            list.load(storage.load());
         } catch (IllegalArgumentException e) {
             ui.printException(e.getMessage());
-            return new TaskList();
         }
+        return list;
     }
 
-    // an exit flag
-    public boolean isShouldExit() {
-        return shouldExit;
-    }
-
+    /**
+     * Processes a single user input and returns a response string.
+     *
+     * <p>The workflow is:
+     * <ol>
+     *     <li>Parse input into a concrete Command</li>
+     *     <li>Execute the Command</li>
+     *     <li>Update exit state if necessary</li>
+     * </ol>
+     *
+     * @param userInput Raw input from user.
+     * @return Response string to be displayed.
+     */
     public String getResponse(String userInput) {
         try {
-            // 1. 解析器直接返回一个具体的 Command 对象 (如 AddCommand, DeleteCommand)
             Command command = parser.parse(userInput);
-
-            // 2. 无脑调用 execute，Mintty 根本不需要知道具体是什么命令
-            String response = command.execute(tasks, ui, storage);
-
-            // 3. 更新退出状态
+            String response = command.execute(taskList, ui, storage);
             shouldExit = command.isExit();
-
             return response;
-
         } catch (IllegalArgumentException e) {
             return ui.printException(e.getMessage());
         }
     }
-
-    /**
-     * Starts the conversation.
-     * Actively listens to users' inputs to respond to that.
-     */
-    public void run() {
-        System.out.println(ui.printGreeting());
-        Scanner sc = new Scanner(System.in);
-
-        while (!isShouldExit()) {
-            String userInput = ui.readUserInput(sc);
-            String response = getResponse(userInput);
-            System.out.println(response);
-        }
-        sc.close();
-    }
 }
-

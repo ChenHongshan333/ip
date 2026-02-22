@@ -1,92 +1,124 @@
 package mintty.parser;
 
+import mintty.command.*;
 import java.time.DateTimeException;
 import java.time.LocalDateTime;
-import mintty.command.Command;
 
 /**
- * Parses user-input string to command and arguments.
- * Further parsing on arguments are also supported.
+ * Parses raw user input into concrete {@link Command} objects.
+ *
+ * <p>This class is responsible ONLY for:
+ * <ul>
+ *     <li>Validating input syntax</li>
+ *     <li>Extracting parameters</li>
+ *     <li>Constructing appropriate Command objects</li>
+ * </ul>
+ *
+ * <p>It does NOT execute any business logic.
+ * All business logic is encapsulated inside Command implementations.
  */
 public class CommandParser {
 
     /**
-     * Parses a raw input line into a {@link ParsedCommand} consisting of a command word and an argument.
+     * Parses raw user input into a concrete {@link Command}.
      *
-     * <p>The command word is taken as the first token (before the first space). The remaining text
-     * after the first space is treated as the argument and is trimmed. If there is no space, the
-     * argument is an empty string.</p>
+     * <p>The first token is treated as the command word.
+     * The remaining text is passed as argument to specific parsers.</p>
      *
-     * @param line The raw input line to parse; must not be {@code null} or blank.
-     * @return A {@code ParsedCommand} containing the parsed {@code Command} and argument string.
-     * @throws IllegalArgumentException If {@code line} is {@code null} or blank.
+     * @param input Raw user input.
+     * @return A concrete Command object ready for execution.
+     * @throws IllegalArgumentException If input is invalid or command is unknown.
      */
-    public ParsedCommand lineParser(String line) {
-        // no command and arg
-        if (line == null || line.trim().isEmpty()) {
-            throw new IllegalArgumentException("Hey we're in a conversation...! You can't expect me to reply with you saying nothing TT");
+    public Command parse(String input) {
+
+        if (input == null || input.trim().isEmpty()) {
+            throw new IllegalArgumentException(
+                    "Hey we're in a conversation...! You can't expect me to reply with you saying nothing TT");
         }
 
-        // only command
-        int firstSpace = line.indexOf(' ');
-        if (firstSpace == -1) {
-            return new ParsedCommand(Command.from(line), "");
+        String[] parts = input.trim().split("\\s+", 2);
+        String commandWord = parts[0].toLowerCase();
+        String arg = parts.length > 1 ? parts[1].trim() : "";
+
+        switch (commandWord) {
+
+        case "bye":
+        case "exit":
+        case "quit":
+            return new ExitCommand();
+
+        case "list":
+            return new ListCommand();
+
+        case "todo":
+        case "td":
+            return parseTodo(arg);
+
+        case "deadline":
+        case "ddl":
+            return parseDeadline(arg);
+
+        case "event":
+        case "e":
+            return parseEvent(arg);
+
+        case "delete":
+        case "del":
+            return new DeleteCommand(parseTaskNumber(arg));
+
+        case "mark":
+        case "m":
+            return new MarkCommand(parseTaskNumber(arg));
+
+        case "unmark":
+        case "u":
+            return new UnmarkCommand(parseTaskNumber(arg));
+
+        case "find":
+        case "f":
+            return new FindCommand(arg);
+
+        case "snooze":
+        case "s":
+            return parseSnooze(arg);
+
+        default:
+            throw new IllegalArgumentException(
+                    "Oops!! I don't know what you're saying TT. Is there a typo?");
         }
-
-        String command = line.substring(0, firstSpace).toLowerCase();
-
-        assert command != null : "The cases when command is null should be addressed; but now command is：" + command;
-
-        Command cmd = Command.from(command);
-        String arg = line.substring(firstSpace + 1).trim();
-
-        return new ParsedCommand(cmd, arg);
     }
 
-
     /**
-     * Parses a raw input string into an integer.
+     * Parses a todo command argument.
      *
-     * @param arg The raw input string to parse; must not be {@code null} or blank.
-     * @return An integer
-     * @throws IllegalArgumentException If {@code arg} is {@code null} or blank, or {@code arg} is negative or float.
+     * @param arg Argument string after command word.
+     * @return TodoCommand
+     * @throws IllegalArgumentException If description is missing.
      */
-    public int parseTaskNumber(String arg) {
+    public Command parseTodo(String arg) {
         if (arg == null || arg.trim().isEmpty()) {
-            throw new IllegalArgumentException("Noo.. Plz provide a task number!");
+            throw new IllegalArgumentException("Ooops... missing task description! TT");
         }
-        try {
-            int taskNumber = Integer.parseInt(arg.trim());
-            if (taskNumber <= 0) {
-                throw new IllegalArgumentException("Noo... task number must be positive!");
-            }
-            return taskNumber;
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Noo... task number must be an integer!");
-        }
-
+        return new TodoCommand(arg.trim());
     }
 
     /**
-     * Parses a raw input line into a {@link ParsedDeadline} consisting of a task description and a "by" argument.
+     * Parses a deadline command argument.
      *
-     * <p>The task description is taken as the first token (before {@code /by}). The remaining text
-     * after {@code /by} is treated as the argument and is trimmed.
-     * If there is no {@code /by}, an IllegalArgumentException will be thrown.</p>
-     *
-     * @param arg The raw input line to parse; must not be {@code null} or blank.
-     * @return A {@code ParsedDeadline} containing the parsed description string and deadline string.
-     * @throws IllegalArgumentException If {@code arg} is {@code null} or blank, or the parsed description string or {@code /by} string is {@code null}.
+     * @param arg Raw argument string.
+     * @return DeadlineCommand
+     * @throws IllegalArgumentException If format or datetime is invalid.
      */
-    public ParsedDeadline deadlineParser(String arg) {
+    public Command parseDeadline(String arg) {
+
         if (arg == null || arg.trim().isEmpty()) {
             throw new IllegalArgumentException("Ooops... missing task description! TT");
         }
 
         String lower = arg.toLowerCase();
         int byPos = lower.indexOf("/by");
+
         if (byPos < 0) {
-            // if there is no "/by"
             throw new IllegalArgumentException("Oops.. missing /by!");
         }
 
@@ -102,30 +134,24 @@ public class CommandParser {
 
         try {
             LocalDateTime by = DateTimeParser.parse(raw);
-            return new ParsedDeadline(des, by);
+            return new DeadlineCommand(des, by);
         } catch (DateTimeException e) {
-            throw new IllegalArgumentException("Invalid date (T^T) Make sure using the format:\n" +
-                    "2026.1.26 8pm\n" +
-                    "2026-1-26 20:00\n" +
-                    "2026/1/26 20");
+            throw new IllegalArgumentException("Invalid date (T^T) Make sure using the format:\n"
+                    + "2026.1.26 8pm\n"
+                    + "2026-1-26 20:00\n"
+                    + "2026/1/26 20");
         }
     }
 
-
     /**
-     * Parses a raw input line into a {@link ParsedEvent},
-     * consisting of a task description, a {@code /from} and a {@code /to} argument.
+     * Parses an event command argument.
      *
-     * <p>The task description is taken as the first token (before {@code /from}).
-     * The starting time (between {@code /from} and {@code /to}) is taken as the second token.
-     * The remaining text after {@code /to} is treated as the ending time argument and is trimmed.
-     * If any of the above tokens is missing, an IllegalArgumentException will be thrown.</p>
-     *
-     * @param arg The raw input line to parse; must not be {@code null} or blank.
-     * @return A {@code ParsedEvent} containing the parsed description string, starting time and ending time string.
-     * @throws IllegalArgumentException If {@code arg} is {@code null} or blank, or any of the above tokens is missing.
+     * @param arg Raw argument string.
+     * @return EventCommand
+     * @throws IllegalArgumentException If format or datetime is invalid.
      */
-    public ParsedEvent eventParser(String arg) {
+    public Command parseEvent(String arg) {
+
         if (arg == null || arg.trim().isEmpty()) {
             throw new IllegalArgumentException("Ooops... missing task description! TT");
         }
@@ -153,7 +179,7 @@ public class CommandParser {
         try {
             LocalDateTime from = DateTimeParser.parse(dateF);
             LocalDateTime to = DateTimeParser.parse(dateT);
-            return new ParsedEvent(des, from, to);
+            return new EventCommand(des, from, to);
         } catch (DateTimeException e) {
             throw new IllegalArgumentException("Invalid date (T^T) Make sure using the format:\n"
                     + "2026.1.26 8pm\n"
@@ -163,11 +189,22 @@ public class CommandParser {
     }
 
     /**
-     * Parse a row {@code arg} into a {@link ParsedSnooze}
-     * @param arg
-     * @return a {@link ParsedSnooze} that is consisting of (index, by, from, to)
+     * Parses snooze command argument.
+     *
+     * <p>Supported formats:
+     * <pre>
+     * snooze 1 by 2026-1-1 20:00
+     * snooze 2 from 2026-1-1 10:00
+     * snooze 2 to 2026-1-1 12:00
+     * snooze 2 from 2026-1-1 10:00 to 2026-1-1 12:00
+     * </pre>
+     *
+     * @param arg Raw argument string.
+     * @return SnoozeCommand
+     * @throws IllegalArgumentException If format is invalid.
      */
-    public ParsedSnooze snoozeParser(String arg) {
+    public Command parseSnooze(String arg) {
+
         if (arg == null || arg.trim().isEmpty()) {
             throw new IllegalArgumentException("Ooops... missing snooze description! TT");
         }
@@ -182,31 +219,34 @@ public class CommandParser {
         String lower = tail.toLowerCase();
 
         try {
+
             if (lower.startsWith("by ")) {
                 LocalDateTime by = DateTimeParser.parse(tail.substring(3).trim());
-                return new ParsedSnooze(index, by, null, null);
+                return new SnoozeCommand(index, by, null, null);
             }
 
             if (lower.startsWith("to ")) {
                 LocalDateTime to = DateTimeParser.parse(tail.substring(3).trim());
-                return new ParsedSnooze(index, null, null, to);
+                return new SnoozeCommand(index, null, null, to);
             }
 
             if (lower.startsWith("from ")) {
+
                 String afterFrom = tail.substring(5).trim();
                 int toPos = indexOfToken(afterFrom, "to");
 
-                if (toPos >= 0) { // from ... to ...
+                if (toPos >= 0) {
                     String fromStr = afterFrom.substring(0, toPos).trim();
                     String toStr = afterFrom.substring(toPos + 2).trim();
+
                     LocalDateTime from = DateTimeParser.parse(fromStr);
                     LocalDateTime to = DateTimeParser.parse(toStr);
-                    return new ParsedSnooze(index, null, from, to);
+
+                    return new SnoozeCommand(index, null, from, to);
                 }
 
-                // only from
                 LocalDateTime from = DateTimeParser.parse(afterFrom);
-                return new ParsedSnooze(index, null, from, null);
+                return new SnoozeCommand(index, null, from, null);
             }
 
         } catch (DateTimeException e) {
@@ -223,9 +263,40 @@ public class CommandParser {
                 + "snooze <index> from <datetime> to <datetime>");
     }
 
+    /**
+     * Parses task number and validates it.
+     *
+     * @param arg Raw string.
+     * @return Positive integer index.
+     * @throws IllegalArgumentException If invalid.
+     */
+    public int parseTaskNumber(String arg) {
+        if (arg == null || arg.trim().isEmpty()) {
+            throw new IllegalArgumentException("Noo.. Plz provide a task number!");
+        }
+
+        try {
+            int taskNumber = Integer.parseInt(arg.trim());
+            if (taskNumber <= 0) {
+                throw new IllegalArgumentException("Noo... task number must be positive!");
+            }
+            return taskNumber;
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Noo... task number must be an integer!");
+        }
+    }
+
+    /**
+     * Finds index of a token within a string using whitespace separation.
+     *
+     * @param s Full string.
+     * @param token Token to search.
+     * @return Starting position of token, or -1 if not found.
+     */
     private int indexOfToken(String s, String token) {
         String[] tokens = s.split("\\s+");
         int pos = 0;
+
         for (String t : tokens) {
             if (t.equalsIgnoreCase(token)) {
                 return pos;
@@ -234,110 +305,4 @@ public class CommandParser {
         }
         return -1;
     }
-
-
-
-    /**
-     * Represents a parsed user input consisting of a {@link Command} and its argument string.
-     *
-     * <p>This is an immutable value object produced by the parser. If the original input contains
-     * only a command word, the argument is typically an empty string ({@code ""}).</p>
-     */
-    public final class ParsedCommand {
-        private final Command command;
-        private final String arg;
-
-        public ParsedCommand(Command command, String arg) {
-            this.command = command;
-            this.arg = arg;
-        }
-
-        public Command command() {
-            return command;
-        }
-
-        public String arg() {
-            return arg;
-        }
-    }
-
-
-    /**
-     * Represents a parsed deadline argument input consisting of a description string and its argument string.
-     */
-    public class ParsedDeadline {
-        private final String des;
-        private final LocalDateTime by;
-
-        public ParsedDeadline(String des, LocalDateTime by) {
-            this.des = des;
-            this.by = by;
-        }
-
-        public String des() {
-            return des;
-        }
-
-        public LocalDateTime by() {
-            return by;
-        }
-    }
-
-    /**
-     * Represents a parsed event argument input consisting of a description string and its argument string.
-     */
-    public class ParsedEvent {
-        private final String des;
-        private final LocalDateTime from;
-        private final LocalDateTime to;
-
-        public ParsedEvent(String des, LocalDateTime from, LocalDateTime to) {
-            this.des = des;
-            this.from = from;
-            this.to = to;
-        }
-
-        public String des() {
-            return des;
-        }
-
-        public LocalDateTime from() {
-            return from;
-        }
-
-        public LocalDateTime to() {
-            return to;
-        }
-    }
-
-    public class ParsedSnooze {
-        private final int index;
-        private final LocalDateTime by;
-        private final LocalDateTime from;
-        private final LocalDateTime to;
-
-        public ParsedSnooze(int index, LocalDateTime by, LocalDateTime from, LocalDateTime to) {
-            this.index = index;
-            this.by = by;
-            this.from = from;
-            this.to = to;
-        }
-
-        public int index() {
-            return index;
-        }
-
-        public LocalDateTime by() {
-            return by;
-        }
-
-        public LocalDateTime from() {
-            return from;
-        }
-
-        public LocalDateTime to() {
-            return to;
-        }
-    }
-
 }
