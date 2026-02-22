@@ -99,3 +99,9 @@ To add a table of contents based on the content already written.
 * [Command Summary](#command-summary)
 * [Contributing](#contributing) 
 ```
+
+## CommandParserTest.java
+To refactor the javaDoc to make it more standardized.
+
+## StorageTest.java
+To add the StorageTest.
