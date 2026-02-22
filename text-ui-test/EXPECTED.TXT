@@ -9,19 +9,19 @@ Now you have 1 tasks in total
 --------------------------------------------------
 --------------------------------------------------
 Okie!! I've added this to the mintty.task list:
-[D][ ] submit wk2 ip (by: fri 16:00)
+[D][ ] submit wk2 ip (by: 2026-Feb-23 16:00)
 Now you have 2 tasks in total
 --------------------------------------------------
 --------------------------------------------------
 Okie!! I've added this to the mintty.task list:
-[E][ ] porcupine neighbourhood night (from: sun 19:00 to: sun 20:30)
+[E][ ] porcupine neighbourhood night (from: 2026-Jan-11 19:00, to: 2026-Jan-13 20:30)
 Now you have 3 tasks in total
 --------------------------------------------------
 --------------------------------------------------
 Here are the tasks in your list: 
 1.[T][ ] take shower
-2.[D][ ] submit wk2 ip (by: fri 16:00)
-3.[E][ ] porcupine neighbourhood night (from: sun 19:00 to: sun 20:30)
+2.[D][ ] submit wk2 ip (by: 2026-Feb-23 16:00)
+3.[E][ ] porcupine neighbourhood night (from: 2026-Jan-11 19:00, to: 2026-Jan-13 20:30)
 --------------------------------------------------
 --------------------------------------------------
 Niceee! I've marked this mintty.task as done:
@@ -29,7 +29,7 @@ Niceee! I've marked this mintty.task as done:
 --------------------------------------------------
 --------------------------------------------------
 Niceee! I've marked this mintty.task as done:
-[D][X] submit wk2 ip (by: fri 16:00)
+[D][X] submit wk2 ip (by: 2026-Feb-23 16:00)
 --------------------------------------------------
 --------------------------------------------------
 Okie, I've marked this mintty.task as not done yet:
@@ -38,8 +38,8 @@ Okie, I've marked this mintty.task as not done yet:
 --------------------------------------------------
 Here are the tasks in your list: 
 1.[T][ ] take shower
-2.[D][X] submit wk2 ip (by: fri 16:00)
-3.[E][ ] porcupine neighbourhood night (from: sun 19:00 to: sun 20:30)
+2.[D][X] submit wk2 ip (by: 2026-Feb-23 16:00)
+3.[E][ ] porcupine neighbourhood night (from: 2026-Jan-11 19:00, to: 2026-Jan-13 20:30)
 --------------------------------------------------
 --------------------------------------------------
 Nice to talk to you ^^

@@ -1,6 +1,6 @@
 todo take shower
-ddl submit wk2 iP /by Fri 16:00
-event Porcupine neighbourhood night /from Sun 19:00 /to Sun 20:30
+ddl submit wk2 iP /by 2026.2.23 16:00
+event Porcupine neighbourhood night /from 2026.1.11 19:00 /to 2026.1.13 20:30
 list
 mark 1
 mark 2
