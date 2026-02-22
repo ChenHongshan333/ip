@@ -77,3 +77,25 @@ public Task snooze(int taskNumber, LocalDateTime by, LocalDateTime from, LocalDa
         throw new IllegalArgumentException("This task type does not support snooze!");
     }
 ```
+
+## README.md
+To add a table of contents based on the content already written.
+
+```
+## Table of Contents
+
+* [Quick Start](#quick-start)
+* [Features](#features)
+    * [Adding a Todo task: `Todo`](#1-todo)
+    * [Adding a Deadline task: `Deadline`](#2-deadline)
+    * [Adding an Event task: `Event`](#3-event)
+    * [Listing out all tasks: `List`](#4-list)
+    * [Marking a task as done: `Mark`](#5-mark)
+    * [Marking a task as not done: `Unmark`](#6-unmark)
+    * [Searching a task: `Find`](#7-find)
+    * [Deleting a task: `Delete`](#8-delete)
+    * [Snoozing a task: `Snooze`](#9-snooze)
+    * [Exiting the program: `Bye`](#10-bye)
+* [Command Summary](#command-summary)
+* [Contributing](#contributing) 
+```
