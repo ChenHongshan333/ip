@@ -47,7 +47,7 @@ Whether you are tracking assignments or scheduling personal events, Mintty helps
 > * Words in `UPPER_CASE` are the parameters to be supplied by the user.
 > * Extraneous parameters for commands that do not take in parameters (such as `list`, `bye`) will be ignored.
 
-### 1. Todo
+### <u>1. Todo</u>
 
 Adds a basic task without any date or time constraints to the list.
 
@@ -66,7 +66,7 @@ Okie!! I've added this to the task list:
 Now you have 2 tasks in total.
 ```
 
-### 2. Deadline
+### <u>2. Deadline</u>
 
 Adds a task that needs to be done before a specific date/time.
 
@@ -85,7 +85,7 @@ Okie!! I've added this to the task list:
 Now you have 3 tasks in total.
 ```
 
-### 3. Event
+### <u>3. Event</u>
 
 Adds a task that starts at a specific time and ends at a specific time.
 
@@ -104,7 +104,7 @@ Okie!! I've added this to the task list:
 Now you have 4 tasks in total.
 ```
 
-### 4. List
+### <u>4. List</u>
 
 Shows a list of all tasks currently stored in Mintty.
 
@@ -117,7 +117,7 @@ Here are the tasks in your list:
 2.[D][ ] CS2109S midterm (by: 2026-Mar-2 18:30)
 ```
 
-### 5. Mark
+### <u>5. Mark</u>
 
 Marks the specified task from the list as completed.
 
@@ -135,7 +135,7 @@ Niceee! I've marked this task as done:
 [D][X] CS2109S midterm (by: 2026-Mar-2 18:30)
 ```
 
-### 6. Unmark
+### <u>6. Unmark</u>
 
 Reverts a completed task back to an uncompleted state.
 
@@ -149,7 +149,7 @@ Okie, I've marked this task as not done yet:
 [D][ ] CS2109S midterm (by: 2026-Mar-2 18:30)
 ```
 
-### 7. Find
+### <u>7. Find</u>
 
 Finds tasks whose description matches the given keyword(s).
 
@@ -167,7 +167,7 @@ Heyyy! I've matched the following tasks in your list:
 2.[D][ ] CS2109S midterm (by: 2026-Mar-2 18:30)
 ```
 
-### 8. Delete
+### <u>8. Delete</u>
 
 Deletes the specified task from the list.
 
@@ -186,7 +186,7 @@ Okie!! I've removed this from the task list:
 Now you have 1 tasks in total.
 ```
 
-### 9. Snooze
+### <u>9. Snooze</u>
 
 Postpones or reschedules a Deadline or Event task to a new date/time.
 > **Note:** This feature does not support `Todo` tasks, as they do not have time constraints.
@@ -205,7 +205,7 @@ Postpones or reschedules a Deadline or Event task to a new date/time.
 Snoozed: [E][ ] Event (from: XXXX, to: 2026-Mar-3 18:00)
 ```
 
-### 10. Bye
+### <u>10. Bye</u>
 
 Exits the program and saves your tasks automatically.
 
