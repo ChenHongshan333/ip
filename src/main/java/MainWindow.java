@@ -1,3 +1,5 @@
+import javafx.animation.PauseTransition;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -5,6 +7,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 import mintty.Mintty;
 
 /**
@@ -33,6 +36,10 @@ public class MainWindow extends AnchorPane {
     /** Injects the Duke instance */
     public void setMintty(Mintty mintty) {
         this.mintty = mintty;
+        // Automatically prints the welcome message on startup
+        dialogContainer.getChildren().add(
+                DialogBox.getDukeDialog("Hello! I'm Mintty QwQ\nWhat can I do for you today?", minttyImage)
+        );
     }
 
     /**
@@ -48,5 +55,12 @@ public class MainWindow extends AnchorPane {
                 DialogBox.getDukeDialog(response, minttyImage)
         );
         userInput.clear();
+
+        // Exits the window after a 1.5-second delay if "bye" was typed
+        if (mintty.hasExit()) {
+            PauseTransition delay = new PauseTransition(Duration.seconds(1.5));
+            delay.setOnFinished(event -> Platform.exit());
+            delay.play();
+        }
     }
 }

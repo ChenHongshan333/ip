@@ -85,6 +85,13 @@ public class Mintty {
     }
 
     /**
+     * Checks if the application should exit based on the last executed command.
+     */
+    public boolean hasExit() {
+        return this.shouldExit;
+    }
+
+    /**
      * Processes a single user input and returns a response string.
      *
      * <p>The workflow is:

@@ -10,6 +10,7 @@ import java.util.SimpleTimeZone;
 public class Ui {
     // protected static final String separator = "-".repeat(50);
 
+    // I hard coded this part in MainWindow.java
     public String printGreeting() {
         return "Heyyy this is Mintty ~\nWhat can I do for you?\n";
     }
