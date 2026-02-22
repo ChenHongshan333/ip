@@ -33,6 +33,7 @@ public class Mintty {
 
     /**
      * Constructor for Mintty
+     *
      * @param filePath
      */
     public Mintty(String filePath) {
@@ -54,22 +55,18 @@ public class Mintty {
     }
 
     /**
-     * Starts the conversation.
-     * Actively listens to users' inputs to respond to that.
+     * Initialize the taskList.
+     *
+     * @return a {@code TaskList}
      */
-    public void run() {
-        System.out.println(ui.printGreeting());
-        Scanner sc = new Scanner(System.in);
-
-        while (true) {
-            String userInput = ui.readUserInput(sc);
-            String response = getResponse(userInput);
-            System.out.println(response);
-
-            if (isShouldExit()) {
-                sc.close();
-                return;
-            }
+    private TaskList initializeTaskList() {
+        try {
+            TaskList loaded = new TaskList();
+            loaded.load(storage.load());
+            return loaded;
+        } catch (IllegalArgumentException e) {
+            ui.printException(e.getMessage());
+            return new TaskList();
         }
     }
 
@@ -79,111 +76,140 @@ public class Mintty {
     }
 
     public String getResponse(String userInput) {
-        shouldExit = false;
-
         try {
-            if (userInput == null) {
-                shouldExit = true;
-                return ui.printGoodbye();
-            }
+            // 1. 解析器直接返回一个具体的 Command 对象 (如 AddCommand, DeleteCommand)
+            Command command = parser.parse(userInput);
 
-            // Parse the input (command + arg)
-            var parsed = parser.lineParser(userInput);
-            Command command = parsed.command();
-            String arg = parsed.arg(); // may contain by / from / to
+            // 2. 无脑调用 execute，Mintty 根本不需要知道具体是什么命令
+            String response = command.execute(tasks, ui, storage);
 
-            // based on different prompt, do different things
-            switch (command) {
-            case BYE:
-                shouldExit = true;
-                return ui.printGoodbye();
+            // 3. 更新退出状态
+            shouldExit = command.isExit();
 
-            case LIST:
-                return ui.printList(list);
-
-            case MARK: {
-                int n = parser.parseTaskNumber(arg);
-                Task markedTask = list.setTask(n, true);
-                storage.save(list.getList());
-                return ui.printMarkedTask(markedTask);
-            }
-
-            case UNMARK: {
-                int m = parser.parseTaskNumber(arg);
-                Task unmarkedTask = list.setTask(m, false);
-                storage.save(list.getList());
-                return ui.printMarkedTask(unmarkedTask);
-            }
-
-
-            case FIND: {
-                List<Task> foundList = list.find(arg);
-                return ui.printFind(foundList);
-            }
-
-
-            case DELETE: {
-                int r = parser.parseTaskNumber(arg);
-                Task removed = list.remove(r);
-                storage.save(list.getList());
-                return ui.printDelete(removed, list.size());
-            }
-
-
-            case TODO: {
-                Task todoTask = new Todo(arg);
-                list.add(todoTask);
-                storage.save(list.getList());
-                return ui.printAddedMsg(todoTask, list.size());
-            }
-
-
-            case DEADLINE: {
-                var dParts = parser.deadlineParser(arg);
-                Task ddlTask = new Deadline(dParts.des(), dParts.by());
-                list.add(ddlTask);
-                storage.save(list.getList());
-                return ui.printAddedMsg(ddlTask, list.size());
-            }
-
-
-            case EVENT: {
-                var eParts = parser.eventParser(arg);
-                Task eventTask = new Event(eParts.des(), eParts.from(), eParts.to());
-                list.add(eventTask);
-                storage.save(list.getList());
-                return ui.printAddedMsg(eventTask, list.size());
-            }
-
-            case SNOOZE: {
-                // ddl: snooze 1 by XXXX
-                // event: snooze 2 from xxxx
-                // event: snooze 2 to xxxx
-                // event: snooze 2 from xxxx to xxxx
-                // todoTask: do not support "snooze"
-                var s = parser.snoozeParser(arg);
-                Task snoozed = list.snooze(s.index(), s.by(), s.from(), s.to());
-                storage.save(list.getList());
-                return "Snoozed: " + snoozed;
-
-            }
-
-            default:
-                throw new IllegalArgumentException("Oops!! I don't know what you're saying TT. Is there a typo?");
-            }
+            return response;
 
         } catch (IllegalArgumentException e) {
             return ui.printException(e.getMessage());
         }
     }
 
-//    /**
-//     * Main function.
-//     */
-//    public static void main(String[] args) {
-//        Mintty mintty = new Mintty("data/mintty.txt");
-//        mintty.run();
+    /**
+     * Starts the conversation.
+     * Actively listens to users' inputs to respond to that.
+     */
+    public void run() {
+        System.out.println(ui.printGreeting());
+        Scanner sc = new Scanner(System.in);
+
+        while (!isShouldExit()) {
+            String userInput = ui.readUserInput(sc);
+            String response = getResponse(userInput);
+            System.out.println(response);
+        }
+        sc.close();
+    }
+}
+
+
+
+
+
+//    public String getResponse(String userInput) {
+//        shouldExit = false;
+//
+//        try {
+//            if (userInput == null) {
+//                shouldExit = true;
+//                return ui.printGoodbye();
+//            }
+//
+//            // Parse the input (command + arg)
+//            var parsed = parser.lineParser(userInput);
+//            Command command = parsed.command();
+//            String arg = parsed.arg(); // may contain by / from / to
+//
+//            // based on different prompt, do different things
+//            switch (command) {
+//            case BYE:
+//                shouldExit = true;
+//                return ui.printGoodbye();
+//
+//            case LIST:
+//                return ui.printList(list);
+//
+//            case MARK: {
+//                int n = parser.parseTaskNumber(arg);
+//                Task markedTask = list.setTask(n, true);
+//                storage.save(list.getList());
+//                return ui.printMarkedTask(markedTask);
+//            }
+//
+//            case UNMARK: {
+//                int m = parser.parseTaskNumber(arg);
+//                Task unmarkedTask = list.setTask(m, false);
+//                storage.save(list.getList());
+//                return ui.printMarkedTask(unmarkedTask);
+//            }
+//
+//
+//            case FIND: {
+//                List<Task> foundList = list.find(arg);
+//                return ui.printFind(foundList);
+//            }
+//
+//
+//            case DELETE: {
+//                int r = parser.parseTaskNumber(arg);
+//                Task removed = list.remove(r);
+//                storage.save(list.getList());
+//                return ui.printDelete(removed, list.size());
+//            }
+//
+//
+//            case TODO: {
+//                Task todoTask = new Todo(arg);
+//                list.add(todoTask);
+//                storage.save(list.getList());
+//                return ui.printAddedMsg(todoTask, list.size());
+//            }
+//
+//
+//            case DEADLINE: {
+//                var dParts = parser.deadlineParser(arg);
+//                Task ddlTask = new Deadline(dParts.des(), dParts.by());
+//                list.add(ddlTask);
+//                storage.save(list.getList());
+//                return ui.printAddedMsg(ddlTask, list.size());
+//            }
+//
+//
+//            case EVENT: {
+//                var eParts = parser.eventParser(arg);
+//                Task eventTask = new Event(eParts.des(), eParts.from(), eParts.to());
+//                list.add(eventTask);
+//                storage.save(list.getList());
+//                return ui.printAddedMsg(eventTask, list.size());
+//            }
+//
+//            case SNOOZE: {
+//                // ddl: snooze 1 by XXXX
+//                // event: snooze 2 from xxxx
+//                // event: snooze 2 to xxxx
+//                // event: snooze 2 from xxxx to xxxx
+//                // todoTask: do not support "snooze"
+//                var s = parser.snoozeParser(arg);
+//                Task snoozed = list.snooze(s.index(), s.by(), s.from(), s.to());
+//                storage.save(list.getList());
+//                return "Snoozed: " + snoozed;
+//
+//            }
+//
+//            default:
+//                throw new IllegalArgumentException("Oops!! I don't know what you're saying TT. Is there a typo?");
+//            }
+//
+//        } catch (IllegalArgumentException e) {
+//            return ui.printException(e.getMessage());
+//        }
 //    }
 
-
-}
