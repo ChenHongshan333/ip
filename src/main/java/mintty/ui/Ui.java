@@ -8,13 +8,6 @@ import java.util.Scanner;
 import java.util.SimpleTimeZone;
 
 public class Ui {
-    // protected static final String separator = "-".repeat(50);
-
-    // I hard coded this part in MainWindow.java
-    public String printGreeting() {
-        return "Heyyy this is Mintty ~\nWhat can I do for you?\n";
-    }
-
     public String printGoodbye() {
         return "Nice to talk to you ^^\nSee you!\n";
     }
@@ -79,12 +72,4 @@ public class Ui {
         }
         return sb.toString();
     }
-
-    public String readUserInput(Scanner sc) {
-        if (!sc.hasNextLine()) {
-            return null;
-        }
-        return sc.nextLine();
-    }
-
 }

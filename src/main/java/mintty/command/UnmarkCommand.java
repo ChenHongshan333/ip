@@ -5,6 +5,9 @@ import mintty.task.Task;
 import mintty.task.TaskList;
 import mintty.ui.Ui;
 
+/**
+ * Represents a command that is marked as not done yet by user.
+ */
 public class UnmarkCommand extends AbstractCommand {
 
     private final int index;

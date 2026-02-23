@@ -37,17 +37,6 @@ public class DialogBox extends HBox {
         displayPicture.setImage(img);
     }
 
-    // change the picture file to be a circle
-//    public void initialize() {
-//        double radius = 50;
-//
-//        Circle clip = new Circle(radius, radius, radius);
-//        displayPicture.setClip(clip);
-//
-//        displayPicture.setFitWidth(radius * 2);
-//        displayPicture.setFitHeight(radius * 2);
-//    }
-
     /**
      * Flips the dialog box such that the ImageView is on the left and text on the right.
      */

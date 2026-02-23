@@ -8,7 +8,7 @@ import mintty.task.TaskList;
 import mintty.ui.Ui;
 
 /**
- * Handles snooze command for deadline and event tasks.
+ * Represents a snooze command for deadline and event tasks.
  */
 public class SnoozeCommand extends AbstractCommand {
 

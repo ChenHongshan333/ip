@@ -7,8 +7,6 @@ import java.util.Locale;
 public class Deadline extends Task {
 
     protected LocalDateTime by;
-    //    static final DateTimeFormatter OUT_DATE =
-    //            DateTimeFormatter.ofPattern("MMM d yyyy", Locale.ENGLISH);
     static final DateTimeFormatter OUT_DATETIME =
             DateTimeFormatter.ofPattern("yyyy-MMM-d HH:mm", Locale.ENGLISH); // 26 Jan 26 20:00
 

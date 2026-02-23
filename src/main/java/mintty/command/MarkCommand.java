@@ -5,6 +5,9 @@ import mintty.task.Task;
 import mintty.task.TaskList;
 import mintty.ui.Ui;
 
+/**
+ * Represents a command that is marked as done by user.
+ */
 public class MarkCommand extends AbstractCommand {
 
     private final int index;
