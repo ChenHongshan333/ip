@@ -11,7 +11,14 @@ public abstract class Task {
     public Task(String description) {
         this.description = description;
         this.isDone = false;
+        // limit the use of "|" or it will destroy the format of mintty.txt file
+        if (description.contains("|")) {
+            throw new IllegalArgumentException(
+                    "Description cannot contain '|'."
+            );
+        }
     }
+
 
     /**
      * Gets the status in the representation of string of the current {@code Task}, based on {@code isDone}

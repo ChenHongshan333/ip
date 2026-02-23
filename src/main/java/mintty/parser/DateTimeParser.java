@@ -17,7 +17,7 @@ import java.util.Locale;
 public class DateTimeParser {
     private static final DateTimeFormatter FMT_24H = new DateTimeFormatterBuilder()
             .parseCaseInsensitive()
-            .appendPattern("yyyy/M/d") // support single number for month/day
+            .appendPattern("uuuu/M/d") // support single number for month/day
             .appendLiteral(' ') // a space is required between date and time
             .appendPattern("H") // hours: from 0 to 24
             .optionalStart() // optional for minutes
@@ -25,11 +25,12 @@ public class DateTimeParser {
             .appendPattern("mm") // minute ranges from 0 to 59
             .optionalEnd()
             .parseDefaulting(ChronoField.MINUTE_OF_HOUR, 0) // if no minute is specified, use 0 by default
-            .toFormatter();
+            .toFormatter()
+            .withResolverStyle(ResolverStyle.STRICT);
 
     private static final DateTimeFormatter FMT_12H = new DateTimeFormatterBuilder()
             .parseCaseInsensitive()
-            .appendPattern("yyyy/M/d") // support single number for month/day
+            .appendPattern("uuuu/M/d") // support single number for month/day
             .appendLiteral(' ') // a space is required between date and time
             .appendPattern("h") // hours: from 0 to 12
             .optionalStart() // optional for minutes
@@ -38,7 +39,8 @@ public class DateTimeParser {
             .optionalEnd()
             .appendPattern("a") // am / pm
             .parseDefaulting(ChronoField.MINUTE_OF_HOUR, 0) // if no minute is specified, use 0 by default
-            .toFormatter(Locale.ENGLISH); // make sure that am/pm is parsed by English
+            .toFormatter(Locale.ENGLISH)
+            .withResolverStyle(ResolverStyle.STRICT); // make sure that am/pm is parsed by English
 
     /**
      * Parses user-input string into standard LocalDateTime.
