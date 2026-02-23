@@ -14,7 +14,7 @@ public abstract class Task {
         // limit the use of "|" or it will destroy the format of mintty.txt file
         if (description.contains("|")) {
             throw new IllegalArgumentException(
-                    "Description cannot contain '|'."
+                    "Ooops... The task description cannot contain '|' !"
             );
         }
     }
