@@ -30,9 +30,9 @@ Whether you are tracking assignments or scheduling personal events, Mintty helps
 ## Quick Start
 
 1. Ensure you have Java `17` or above installed in your Computer.
-2. Download the latest `mintty.jar` from [here](https://github.com/ChenHongshan333/ip).
+2. Download the latest `mintty.jar` from [here](https://github.com/ChenHongshan333/ip/releases/tag/A-Release).
 3. Copy the file to the folder you want to use as the home folder for your Mintty.
-4. Double-click the file to start the app. The GUI similar to the screenshot below should appear in a few seconds.
+4. Use `java -jar mintty.jar` to run the program. The GUI similar to the screenshot below should appear in a few seconds.
 5. Type the command in the command box and press Enter to execute it. e.g. typing `list` and pressing Enter will display all your current tasks.
 
 ![Ui.png](Ui.png)
