@@ -222,18 +222,18 @@ See you!
 
 ## Command Summary
 
-| Action | Format                                                                                                               | Example |
-| :--- |:---------------------------------------------------------------------------------------------------------------------| :--- |
-| **Todo** | `todo DESCRIPTION` <br> `td DESCRPTION`                                                                              | `todo Take shower` |
-| **Deadline** | `deadline DESCRIPTION /by DATETIME`  <br> `ddl DESCRIPTION /by DATETIME`                                             | `deadline CS2109S midterm /by: 2026.3.2 6pm` |
+| Action | Format                                                                                                               | Example                                                       |
+| :--- |:---------------------------------------------------------------------------------------------------------------------|:--------------------------------------------------------------|
+| **Todo** | `todo DESCRIPTION` <br> `td DESCRPTION`                                                                              | `todo Take shower`                                            |
+| **Deadline** | `deadline DESCRIPTION /by DATETIME`  <br> `ddl DESCRIPTION /by DATETIME`                                             | `deadline CS2109S midterm /by 2026.3.2 6pm`                   |
 | **Event** | `event DESCRIPTION /from START_DATETIME /to END_DATETIME` <br> `e DESCRIPTION /from START_DATETIME /to END_DATETIME` | `event prepare for FFC /from 2025.12.3 9pm /to 2026.8.5 11pm` |
-| **List** | `list`  <br> `l`                                                                                                     | |
-| **Mark** | `mark INDEX`  <br> `m INDEX`                                                                                         | `mark 2` |
-| **Unmark** | `unmark INDEX`   <br> `u INDEX`                                                                                      | `unmark 2` |
-| **Find** | `find KEYWORD` <br> `f KEYWORD`                                                                                      | `find CS2109S` |
-| **Delete** | `delete INDEX` <br> `del INDEX`                                                                                      | `delete 2` |
-| **Snooze** | Deadline: `snooze INDEX by NEW_DATETIME`  <br> Event: `snooze INDEX from NEW_START_DATETIME to NEW_END_DATETIME`     | `snooze 2 to 2026-Mar-3 6pm` |
-| **Bye** | `bye` <br> `exit` <br> `quit`                                                                                        | |
+| **List** | `list`  <br> `l`                                                                                                     |                                                               |
+| **Mark** | `mark INDEX`  <br> `m INDEX`                                                                                         | `mark 2`                                                      |
+| **Unmark** | `unmark INDEX`   <br> `u INDEX`                                                                                      | `unmark 2`                                                    |
+| **Find** | `find KEYWORD` <br> `f KEYWORD`                                                                                      | `find CS2109S`                                                |
+| **Delete** | `delete INDEX` <br> `del INDEX`                                                                                      | `delete 2`                                                    |
+| **Snooze** | Deadline: `snooze INDEX by NEW_DATETIME`  <br> Event: `snooze INDEX from NEW_START_DATETIME to NEW_END_DATETIME`     | `snooze 2 to 2026-Mar-3 6pm`                                  |
+| **Bye** | `bye` <br> `exit` <br> `quit`                                                                                        |                                                               |
 
 <br>
 
