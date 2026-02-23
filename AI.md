@@ -105,3 +105,6 @@ To refactor the javaDoc to make it more standardized.
 
 ## StorageTest.java
 To add the StorageTest.
+
+## JavaDoc refinement
+To refine the javadoc in mintty.
