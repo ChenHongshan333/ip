@@ -35,7 +35,7 @@ Whether you are tracking assignments or scheduling personal events, Mintty helps
 4. Use `java -jar mintty.jar` to run the program. The GUI similar to the screenshot below should appear in a few seconds.
 5. Type the command in the command box and press Enter to execute it. e.g. typing `list` and pressing Enter will display all your current tasks.
 
-![Ui.png](Ui.png)
+![Ui.png](docs/Ui.png)
 > A screenshot of Mintty's UI
 
 
